@@ -1,43 +1,40 @@
 define([
 	'compose',
 	'ksf/dom/composite/CompositeBase',
-	'../layout/Flow'
+	'./ListBase'
 ], function(
 	compose,
 	CompositeBase,
-	FlowContainer
+	ListBase
 ){
+	/**
+		List permettant d'afficher une liste ordonnée d'éléments uniques et identifiés d'un store observable (accessible via store.filter(...).sort(...))
+		A la différence d'une liste destinée à afficher le contenu d'un array, on passe à la factory un itemAcessor et non pas la valeur du array directement
+	*/
 	return compose(CompositeBase, {
 		_rootFactory: function() {
-			return new FlowContainer();
+			return compose.create(ListBase, {
+				_itemFactory: this._itemFactory,
+			});
 		},
 		content: function(sortedAccessor) {
 			var self = this;
-			this._root.content(sortedAccessor.items().map(function(itemAccessor) {
-				return self._itemFactory(itemAccessor);
-			}));
-			sortedAccessor.on('itemChanges', function(changes) {
+			var root = this._root;
+			root.content(sortedAccessor.items());
+			this._contentCanceler && this._contentCanceler();
+			this._contentCanceler = sortedAccessor.on('itemChanges', function(changes) {
 				changes.forEach(function(change) {
 					if (change.type === 'remove') {
-						self.remove(change.index);
+						root.remove(change.index);
 					}
 					if (change.type === 'add') {
-						self.add(change.item, change.index);
+						root.add(change.item, change.index);
 					}
 					if (change.type === 'move') {
-						self.move(change.from, change.to);
+						root.move(change.from, change.to);
 					}
 				});
 			});
 		},
-		add: function(itemData, index) {
-			this._root.add(this._itemFactory(itemData), index);
-		},
-		remove: function(index) {
-			this._root.remove(index);
-		},
-		move: function(from, to) {
-			this._root.move(from, to);
-		}
 	});
 });
