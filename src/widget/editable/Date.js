@@ -1,22 +1,11 @@
 define([
 	'compose',
-	'ksf/base/Evented'
+	'./base/Date',
+	'./base/_WithAccessor'
 ], function(
 	compose,
-	Evented
+	Date,
+	_WithAccessor
 ){
-	return compose(Evented, function() {
-		this.domNode = document.createElement('input');
-		this.domNode.type = 'date';
-		var self = this;
-		this.domNode.addEventListener('change', function() {
-			self._emit('input', self.domNode.valueAsDate);
-			self.domNode.valueAsDate = self._value;
-		});
-	}, {
-		value: function(value) {
-			this._value = value;
-			this.domNode.valueAsDate = value;
-		}
-	});
+	return compose(Date, _WithAccessor);
 });

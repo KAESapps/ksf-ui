@@ -1,11 +1,11 @@
 define([
 	'compose',
-	'./base/Checkbox',
+	'./base/ShortText',
 	'./base/_WithAccessor'
 ], function(
 	compose,
-	Checkbox,
+	ShortText,
 	_WithAccessor
 ){
-	return compose(Checkbox, _WithAccessor);
+	return compose(ShortText, _WithAccessor);
 });
