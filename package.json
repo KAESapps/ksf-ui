@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "intern": "~1.6.0"
+  }
+}
