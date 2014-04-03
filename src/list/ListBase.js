@@ -13,7 +13,7 @@ define([
 		this._components = this.own([]);
 	}, {
 		_rootFactory: function() {
-			return new FlowContainer();
+			return new FlowContainer(); // default container
 		},
 		content: function(items) {
 			var self = this;
@@ -25,9 +25,11 @@ define([
 			this._root.content(this._components);
 		},
 		add: function(item, index) {
+			index === undefined && (index = this._components.length);
 			var cmp = this._itemFactory(item);
 			this._root.add(cmp, index);
 			this._components.splice(index, 0, cmp);
+			return cmp;
 		},
 		remove: function(index) {
 			this._root.remove(index);

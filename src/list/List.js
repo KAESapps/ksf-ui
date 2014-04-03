@@ -13,6 +13,8 @@ define([
 	*/
 	return compose(CompositeBase, {
 		_rootFactory: function() {
+			// TODO: permettre d'injecter plus facilement le "root", c'est à dire un MapContainer, c'est à dire un objet avec une factory et des méthodes content, add, remove, move et clear
+			// en fait, il faudrait peut-être plutôt faire un mixin "list/_WithSortedAccessorContent"
 			return compose.create(ListBase, {
 				_itemFactory: this._itemFactory,
 			});
