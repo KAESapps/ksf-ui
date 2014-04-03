@@ -1,7 +1,6 @@
 require.config({
-	paths: {
-		ksf: 'ksf/src'
-	}
+	packages: [{ name: 'ksf', location: 'ksf/src' }],
+	map: { 'ksf-ui': { compose: 'ksf/utils/compose' } }
 });
 
 if (typeof document !== "undefined") {
