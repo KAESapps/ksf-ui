@@ -5,7 +5,7 @@ define([], function() {
 	};
 	Cls.prototype = {
 		value: function(label) {
-			this.domNode.textContent = label;
+			this.domNode.textContent = label === undefined ? null : label;
 		}
 	};
 	return Cls;

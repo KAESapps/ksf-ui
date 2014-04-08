@@ -5,7 +5,7 @@ define([], function() {
 	};
 	Cls.prototype = {
 		label: function(label) {
-			this.domNode.textContent = label;
+			this.domNode.innerHTML = '<span>' + label + '</span>';
 		},
 		on: function(event /* = 'pushed' */, listener) {
 			if (event !== 'pushed') { throw "Unknown event name: " + event; }
