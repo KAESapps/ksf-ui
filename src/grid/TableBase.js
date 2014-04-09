@@ -79,7 +79,11 @@ define([
 		},
 		_itemFactory: function(headCmp) {
 			var th = new ThContainer();
-			th.domNode.textContent = headCmp; // TODO : supporter des composants et pas seulement du texte
+			if (headCmp.domNode) {
+				th.add(headCmp);
+			} else {
+				th.domNode.textContent = headCmp; // TODO : supporter des composants et pas seulement du texte
+			}
 			return th;
 		},
 	});

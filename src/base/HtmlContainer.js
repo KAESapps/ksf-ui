@@ -28,6 +28,7 @@ define([
 			}
 		},
 		add: function(child, index) {
+			index === undefined && (index = this.domNode.children.length);
 			this.domNode.insertBefore(child.domNode, this.domNode.children[index]);
 		},
 		remove: function(index) {
