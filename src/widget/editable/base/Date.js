@@ -17,6 +17,9 @@ define([
 		value: function(value) {
 			this._value = value;
 			this.domNode.valueAsDate = value;
-		}
+		},
+		onInput: function(cb) {
+			return this._on('input', cb);
+		},
 	});
 });

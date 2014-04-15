@@ -3,11 +3,11 @@ define([], function(){
 		var self = this;
 
 		this.value(accessor.value());
-		accessor.on('value', function(value) {
+		accessor.onValue(function(value) {
 			self.value(value);
 		});
 
-		this.on('input', function(inputValue) {
+		this.onInput(function(inputValue) {
 			accessor.value(inputValue);
 		});
 	};

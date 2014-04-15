@@ -24,7 +24,7 @@ define([
 			var root = this._root;
 			root.content(sortedAccessor.items());
 			this._contentCanceler && this._contentCanceler();
-			this._contentCanceler = sortedAccessor.on('itemChanges', function(changes) {
+			this._contentCanceler = sortedAccessor.onItemChanges(function(changes) {
 				changes.forEach(function(change) {
 					if (change.type === 'remove') {
 						root.remove(change.index);

@@ -18,6 +18,9 @@ define([
 		value: function(checked) {
 			this._value = checked;
 			this.domNode.checked = checked;
-		}
+		},
+		onInput: function(cb) {
+			return this._on('input', cb);
+		},
 	});
 });

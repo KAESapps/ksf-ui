@@ -14,9 +14,6 @@ define([
 			self._setNodeValue(self._value);
 		});
 	}, {
-		input: function(value) {
-			this._emit('input', value);
-		},
 		value: function(value) {
 			if (arguments.length > 0) {
 				this._value = value;
@@ -27,6 +24,9 @@ define([
 		},
 		_setNodeValue: function(value) {
 			this.domNode.value = value === undefined ? null : value;
-		}
+		},
+		onInput: function(cb) {
+			return this._on('input', cb);
+		},
 	});
 });
