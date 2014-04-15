@@ -20,7 +20,6 @@ define([
 			});
 		},
 		content: function(sortedAccessor) {
-			var self = this;
 			var root = this._root;
 			root.content(sortedAccessor.items());
 			this._contentCanceler && this._contentCanceler();
