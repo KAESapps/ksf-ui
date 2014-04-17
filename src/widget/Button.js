@@ -1,9 +1,14 @@
-define([], function() {
-	var Cls = function(label) {
+define([
+	'compose',
+	'ksf/dom/WithSize'
+], function(
+	compose,
+	WithSize
+) {
+	return compose(WithSize, function(label) {
 		this.domNode = document.createElement('button');
 		this.label(label);
-	};
-	Cls.prototype = {
+	}, {
 		label: function(label) {
 			this.domNode.innerHTML = '<span>' + label + '</span>';
 		},
@@ -16,6 +21,5 @@ define([], function() {
 				domNode.removeEventListener(domEventName, listener);
 			};
 		}
-	};
-	return Cls;
+	});
 });
