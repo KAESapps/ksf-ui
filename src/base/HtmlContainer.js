@@ -2,12 +2,14 @@ define([
 	'compose',
 	'ksf/dom/WithSize',
 	'ksf/dom/Boundable',
+	'ksf/base/Destroyable',
 ], function(
 	compose,
 	WithSize,
-	Boundable
+	Boundable,
+	Destroyable
 ){
-	return compose(WithSize, Boundable, function(content) {
+	return compose(Destroyable, WithSize, Boundable, function(content) {
 		this.domNode = document.createElement(this._tag);
 		content && this._appendContent(content);
 	}, {
