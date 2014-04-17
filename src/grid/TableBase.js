@@ -80,9 +80,9 @@ define([
 		_itemFactory: function(headCmp) {
 			var th = new ThContainer();
 			if (headCmp.domNode) {
-				th.add(headCmp);
+				th.add(th.own(headCmp)); // headCmp is destroyed when the column is removed
 			} else {
-				th.domNode.textContent = headCmp; // TODO : supporter des composants et pas seulement du texte
+				th.domNode.textContent = headCmp;
 			}
 			return th;
 		},
