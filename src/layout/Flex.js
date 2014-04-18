@@ -22,19 +22,20 @@ define([
 			flexChildren = this._flexChildren = [];
 
 			content.forEach(function(childAndOptions) {
-				var child = childAndOptions[0],
-					options = childAndOptions[1];
-				child = child || childAndOptions;
-				if (options && options.flex) {
+				var child = childAndOptions[0] || childAndOptions,
+					options = childAndOptions[1] || {};
+				if (options.flex) {
 					flexChildren.push(child);
 				} else {
 					fixedChildren.push(child);
 				}
 				this.domNode.appendChild(child.domNode);
 			}, this);
+
+			this._applyInDom();
 		},
-		inDom: function(inDom) {
-			this._inDom = inDom;
+		_applyInDom: function() {
+			var inDom = this._inDom;
 			this._fixedChildren.forEach(function(child) {
 				child.inDom && child.inDom(inDom);
 			});
@@ -42,6 +43,10 @@ define([
 			this._flexChildren.forEach(function(child) {
 				child.inDom && child.inDom(inDom);
 			});
+		},
+		inDom: function(inDom) {
+			this._inDom = inDom;
+			this._applyInDom();
 		},
 
 		_layout: function() {
