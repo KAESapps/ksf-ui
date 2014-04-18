@@ -1,12 +1,14 @@
 define([
 	'compose',
 	'ksf/dom/composite/_Composite',
+	'ksf/base/_Destroyable',
 	'../base/HtmlContainer',
 	'ksf/utils/destroy',
 	'../list/ListBase',
 ], function(
 	compose,
 	_Composite,
+	_Destroyable,
 	HtmlContainer,
 	destroy,
 	ListBase
@@ -17,7 +19,7 @@ define([
 	*/
 	var TableContainer = compose(HtmlContainer, {_tag: 'table'});
 	var TheadContainer = compose(HtmlContainer, {_tag: 'thead'});
-	var ThContainer = compose(HtmlContainer, {_tag: 'th'});
+	var ThContainer = compose(_Destroyable, HtmlContainer, {_tag: 'th'});
 	var TrContainer = compose(HtmlContainer, {_tag: 'tr'});
 	var TdContainer = compose(HtmlContainer, {_tag: 'td'});
 	var BodyContainer = compose(HtmlContainer, {_tag: 'tbody'});

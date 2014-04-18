@@ -1,6 +1,6 @@
 define([
 	'compose',
-	'ksf/base/Evented'
+	'ksf/base/_Evented'
 ], function(
 	compose,
 	Evented

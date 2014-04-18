@@ -1,11 +1,13 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'../ShortText'
+	'../ShortText',
+	'dojo/on',
 ], function(
 	registerSuite,
 	assert,
-	ShortText
+	ShortText,
+	on
 ) {
 	var cmp;
 	registerSuite({
@@ -17,7 +19,7 @@ define([
 		"value": function() {
 			assert.equal(cmp.value(), undefined);
 			var cbCalled = false;
-			cmp.on('input', function() {
+			cmp.onInput(function() {
 				cbCalled = true;
 			});
 
@@ -25,18 +27,25 @@ define([
 			assert.equal(cmp.value(), "toto");
 			assert.equal(cbCalled, false, "No input event when setting value");
 		},
-		"input": function(){
+		"user code change focus on input": function() {
+			cmp.value('toto');
+
 			var inputValues = [];
-			cmp.on('input', function(inputValue) {
-				inputValues.push(inputValue);
+			cmp.onInput(function(value) {
+				inputValues.push(value);
+				document.body.removeChild(cmp.domNode);
 			});
 
-			cmp.input("toto");
+			//TODO: trouver une façon de simuler une saisie utilisateur qui mette le focus sur l'élément (pour que sa suppression du dom déclenche un 'change' imbriqué)
 
-			assert.equal(cmp.value(), undefined);
+			// en attendant, on peut faire le test manuellement :
+			// entrer du texte à la main et faire "Entrée"
+			// puis vérifier que l'événement input n'est déclenché qu'une fois
 
-			cmp.input("titi");
-			assert.deepEqual(inputValues, ["toto", "titi"]);
-		}
+			assert.deepEqual(inputValues, [
+				'titi',
+			]);
+		},
 	});
+
 });

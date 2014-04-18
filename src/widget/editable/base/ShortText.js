@@ -1,17 +1,24 @@
 define([
 	'compose',
-	'ksf/base/_Evented'
+	'ksf/base/_Evented',
+	'ksf/dom/_WithSize',
 ], function(
 	compose,
-	_Evented
+	_Evented,
+	_WithSize
 ){
-	return compose(_Evented, function() {
+	return compose(_Evented, _WithSize, function() {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'text';
 		var self = this;
+		var changing = false;
 		this.domNode.addEventListener('change', function() {
-			self._emit('input', self.domNode.value);
-			self._setNodeValue(self._value);
+			if (!changing) {
+				changing = true;
+				self._emit('input', self.domNode.value);
+				self._setNodeValue(self._value);
+				changing = false;
+			}
 		});
 	}, {
 		value: function(value) {
