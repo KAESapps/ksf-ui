@@ -1,13 +1,13 @@
 define([
 	'compose',
-	'ksf/dom/Boundable',
-	'ksf/dom/WithSize',
+	'ksf/dom/_Boundable',
+	'ksf/dom/_WithSize',
 ], function(
 	compose,
-	Boundable,
-	WithSize
+	_Boundable,
+	_WithSize
 ){
-	return compose(WithSize, function(config) {
+	return compose(_WithSize, function(config) {
 		this.domNode = document.createElement('div');
 		this._fixedChildren = [];
 		this._flexChildren = [];
@@ -60,7 +60,7 @@ define([
 		},
 
 		bounds: function(bounds) {
-			Boundable.bounds.apply(this, arguments);
+			_Boundable.bounds.apply(this, arguments);
 
 			this._layout();
 		}

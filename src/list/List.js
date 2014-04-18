@@ -1,17 +1,17 @@
 define([
 	'compose',
-	'ksf/dom/composite/CompositeBase',
+	'ksf/dom/composite/_Composite',
 	'./ListBase'
 ], function(
 	compose,
-	CompositeBase,
+	_Composite,
 	ListBase
 ){
 	/**
 		List permettant d'afficher une liste ordonnée d'éléments uniques et identifiés d'un store observable (accessible via store.filter(...).sort(...))
 		A la différence d'une liste destinée à afficher le contenu d'un array, on passe à la factory un itemAcessor et non pas la valeur du array directement
 	*/
-	return compose(CompositeBase, {
+	return compose(_Composite, {
 		_rootFactory: function() {
 			// TODO: permettre d'injecter plus facilement le "root", c'est à dire un MapContainer, c'est à dire un objet avec une factory et des méthodes content, add, remove, move et clear
 			// en fait, il faudrait peut-être plutôt faire un mixin "list/_WithSortedAccessorContent"

@@ -1,12 +1,12 @@
 define([
 	'compose',
-	'ksf/dom/composite/CompositeBase',
+	'ksf/dom/composite/_Composite',
 	'../base/HtmlContainer',
 	'ksf/utils/destroy',
 	'../list/ListBase',
 ], function(
 	compose,
-	CompositeBase,
+	_Composite,
 	HtmlContainer,
 	destroy,
 	ListBase
@@ -22,7 +22,7 @@ define([
 	var TdContainer = compose(HtmlContainer, {_tag: 'td'});
 	var BodyContainer = compose(HtmlContainer, {_tag: 'tbody'});
 
-	var Row = compose(CompositeBase, function () {
+	var Row = compose(_Composite, function () {
 		this._components = this.own([]);
 	}, {
 		_rootFactory: function() {
@@ -89,7 +89,7 @@ define([
 	});
 
 
-	var Grid = compose(CompositeBase, function() {
+	var Grid = compose(_Composite, function() {
 		this._columns = [];
 		this._headRow = this.own(new HeadRow());
 		this._body = this.own(new Body());

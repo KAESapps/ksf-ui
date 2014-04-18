@@ -1,13 +1,13 @@
 define([
 	'compose',
-	'ksf/dom/WithSize',
-	'ksf/dom/Boundable',
+	'ksf/dom/_WithSize',
+	'ksf/dom/_Boundable',
 ], function(
 	compose,
-	WithSize,
-	Boundable
+	_WithSize,
+	_Boundable
 ){
-	return compose(WithSize, Boundable, function(content) {
+	return compose(_WithSize, _Boundable, function(content) {
 		this.domNode = document.createElement('div');
 		content && this.content(content);
 	}, {

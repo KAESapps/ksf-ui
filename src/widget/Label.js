@@ -1,11 +1,11 @@
 define([
 	'compose',
-	'ksf/dom/WithSize'
+	'ksf/dom/_WithSize'
 ], function(
 	compose,
-	WithSize
+	_WithSize
 ) {
-	return compose(WithSize, function(label) {
+	return compose(_WithSize, function(label) {
 		this.domNode = document.createElement('span');
 		this.value(label);
 	}, {

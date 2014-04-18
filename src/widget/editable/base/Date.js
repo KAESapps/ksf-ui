@@ -1,11 +1,11 @@
 define([
 	'compose',
-	'ksf/base/Evented'
+	'ksf/base/_Evented'
 ], function(
 	compose,
-	Evented
+	_Evented
 ){
-	return compose(Evented, function() {
+	return compose(_Evented, function() {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'date';
 		var self = this;

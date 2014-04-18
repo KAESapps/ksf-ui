@@ -1,13 +1,13 @@
 define([
 	'compose',
-	'ksf/base/Evented',
-	'ksf/dom/WithSize'
+	'ksf/base/_Evented',
+	'ksf/dom/_WithSize'
 ], function(
 	compose,
-	Evented,
-	WithSize
+	_Evented,
+	_WithSize
 ){
-	return compose(Evented, WithSize, function(options) {
+	return compose(_Evented, _WithSize, function(options) {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'text';
 		if (options && options.placeholder) { this.domNode.placeholder = options.placeholder; }

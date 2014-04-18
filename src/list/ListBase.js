@@ -1,15 +1,15 @@
 define([
 	'compose',
-	'ksf/dom/composite/CompositeBase',
+	'ksf/dom/composite/_Composite',
 	'../layout/Flow',
 	'ksf/utils/destroy',
 ], function(
 	compose,
-	CompositeBase,
+	_Composite,
 	FlowContainer,
 	destroy
 ){
-	return compose(CompositeBase, function () {
+	return compose(_Composite, function () {
 		this._components = this.own([]);
 	}, {
 		_rootFactory: function() {
