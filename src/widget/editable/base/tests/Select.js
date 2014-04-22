@@ -14,7 +14,7 @@ define([
 		beforeEach : function() {
 			cmp = new Select();
 			observedInputs = [];
-			cmp.on('input', function(value) {
+			cmp.onInput(function(value) {
 				observedInputs.push(value);
 			});
 			cmp.options([
