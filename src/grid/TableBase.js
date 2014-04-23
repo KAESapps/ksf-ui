@@ -62,6 +62,9 @@ define([
 			this._root.clear();
 			destroy(this._components);
 		},
+		active: function(active) {
+			this.domNode.classList[active ? 'add' : 'remove']('active');
+		},
 	});
 
 	var Body = compose(ListBase, {
@@ -72,6 +75,16 @@ define([
 			var row = new Row();
 			row.value(item);
 			return row;
+		},
+		onActiveRequest: function(cb) {
+			var bodyNode = this.domNode;
+			this.domNode.addEventListener('click', function(ev) {
+				var node = ev.target;
+				while(node.parentNode !== bodyNode) {
+					node = node.parentNode;
+				}
+				cb(Array.prototype.indexOf.call(bodyNode.children, node));
+			});
 		},
 	});
 
@@ -157,6 +170,18 @@ define([
 			while (rows.length > valueLength) {
 				this.removeRow(valueLength);
 			}
+		},
+		active: function(index) {
+			if (arguments.length) {
+				this._activeRow && this._activeRow.active(false);
+				this._activeRow = this._body._components[index];
+				this._activeRow && this._activeRow.active(true);
+			} else {
+				return this._body._components.indexOf(this._activeRow);
+			}
+		},
+		onActiveRequest: function(cb) {
+			this._body.onActiveRequest(cb);
 		},
 	});
 
