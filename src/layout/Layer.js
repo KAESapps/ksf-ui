@@ -54,7 +54,7 @@ define([
 						childWBound = innerSize.width;
 				}
 				
-				child.bounds({
+				child.bounds && child.bounds({
 					height: childHBound,
 					width: childWBound,
 					heightMax: innerSize.height,

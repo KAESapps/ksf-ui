@@ -10,6 +10,7 @@ define([
 		this.label(label);
 	}, {
 		label: function(label) {
+			label = label === undefined ? '' : label;
 			this.domNode.innerHTML = '<span>' + label + '</span>';
 		},
 		on: function(event /* = 'pushed' */, listener) {

@@ -21,6 +21,8 @@ define([
 			var fixedChildren = this._fixedChildren = [],
 			flexChildren = this._flexChildren = [];
 
+			// TODO: use HTMLContainer for appending children
+			this.domNode.innerHTML = "";
 			content.forEach(function(childAndOptions) {
 				var child = childAndOptions[0] || childAndOptions,
 					options = childAndOptions[1] || {};
@@ -51,11 +53,15 @@ define([
 
 		_layout: function() {
 			if (this._inDom) {
-				var totalFixedHeight = 0;
+				var totalFixedHeight = 0,
+					innerSize = this.size();
 				this._fixedChildren.forEach(function(child) {
 					totalFixedHeight += child.size().height;
+					child.bounds && child.bounds({
+						width: innerSize.width
+					});
 				});
-				var flexHeight = (this.size().height - totalFixedHeight) / this._flexChildren.length;
+				var flexHeight = (innerSize.height - totalFixedHeight) / this._flexChildren.length;
 				this._flexChildren.forEach(function(child) {
 					child.bounds({
 						height: flexHeight
