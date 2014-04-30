@@ -11,6 +11,10 @@ define([
 		this._parentNode = options.parentNode || document.body;
 		this._parentNode.appendChild(this._content.domNode);
 
+		this._content.domNode.style.position = 'absolute';
+		this._content.domNode.style.top = 0;
+		this._content.domNode.style.left = 0;
+
 		this._size();
 		this._content.inDom && this._content.inDom(true);
 
@@ -21,8 +25,8 @@ define([
 	}, {
 		_size: function() {
 			this._content.bounds({
-				height: this._parentNode.offsetHeight,
-				width: this._parentNode.offsetWidth
+				height: window.innerHeight,
+				width: window.innerWidth
 			});
 		},
 		destroy: function() {
