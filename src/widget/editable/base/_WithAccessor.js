@@ -3,7 +3,7 @@ define([], function(){
 		var self = this;
 
 		this.value(accessor.value());
-		accessor.onValue(function(value) {
+		accessor.onChange(function(value) {
 			self.value(value);
 		});
 

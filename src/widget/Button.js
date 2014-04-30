@@ -13,8 +13,7 @@ define([
 			label = label === undefined ? '' : label;
 			this.domNode.innerHTML = '<span>' + label + '</span>';
 		},
-		on: function(event /* = 'pushed' */, listener) {
-			if (event !== 'pushed') { throw "Unknown event name: " + event; }
+		onPushed: function(listener) {
 			var domNode = this.domNode,
 				domEventName = 'click';
 			domNode.addEventListener(domEventName, listener);
