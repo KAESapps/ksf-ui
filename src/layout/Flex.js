@@ -31,6 +31,7 @@ define([
 				} else {
 					fixedChildren.push(child);
 				}
+				child.domNode.style.overflow = 'auto';
 				this.domNode.appendChild(child.domNode);
 			}, this);
 
