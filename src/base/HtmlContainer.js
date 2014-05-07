@@ -27,17 +27,14 @@ define([
 				this.domNode.removeChild(this.domNode.lastChild);
 			}
 		},
-		add: function(child, index) {
-			index === undefined && (index = this.domNode.children.length);
-			this.domNode.insertBefore(child.domNode, this.domNode.children[index]);
+		add: function(child, beforeChild) {
+			this.domNode.insertBefore(child.domNode, beforeChild && beforeChild.domNode);
 		},
-		remove: function(index) {
-			this.domNode.removeChild(this.domNode.children[index]);
+		remove: function(child) {
+			this.domNode.removeChild(child.domNode);
 		},
-		move: function(from, to) {
-			var toNode = this.domNode.children[to],
-				fromNode = this.domNode.children[from];
-			this.domNode.insertBefore(fromNode, toNode);
+		move: function(child, beforeChild) {
+			this.domNode.insertBefore(child.domNode, beforeChild && beforeChild.domNode);
 		}
 	});
 });
