@@ -2,18 +2,16 @@ define([
 	'compose',
 	'../../editable/ShortText',
 	'ksf/dom/style/_WithStyle',
-	'ksf/dom/style/JSS'
+	'ksf/dom/style/JSS',
+	'../styles/ShortText'
 ], function(
 	compose,
 	ShortText,
 	_WithStyle,
-	JSS
+	JSS,
+	style
 ){
 	return compose(ShortText, _WithStyle, {
-		_style: new JSS({
-			padding: '0.5em',
-			borderRadius: '4px',
-			border: '1px solid #ccc',
-		})
+		_style: new JSS(style)
 	});
 });
