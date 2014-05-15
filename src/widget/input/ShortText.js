@@ -16,10 +16,10 @@ define([
 			self._emit('input', self.domNode.value);
 		});
 	}, {
-		input: function(value) {
+		value: function(value) {
+			// value est settable programmatiquement pour initialiser la valeur mais ne déclenche pas un événement 'input'
 			if (arguments.length > 0) {
 				this._setNodeValue(value);
-				this._emit('input', this.domNode.value);
 			} else {
 				return this.domNode.value;
 			}
