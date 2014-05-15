@@ -34,7 +34,10 @@ define([
 			}
 		},
 		_setNodeValue: function(value) {
-			this.domNode.value = value === undefined ? null : value;
+			this.domNode.value = value;
+		},
+		onInput: function(cb) {
+			return this._on('input', cb);
 		}
 	});
 });
