@@ -48,23 +48,24 @@ define([
 			var self = this,
 				domNode = this.domNode;
 			this._optionValues = [];
+			var extraOptionOffset = this._extraOption ? 1 : 0;
 			options.forEach(function(valueLabel, i) {
 				var childrenLength = domNode.children.length;
-				var el = (i >= childrenLength) ? document.createElement('option') : domNode.children[i];
-				
+				var el = (i >= childrenLength - extraOptionOffset) ? document.createElement('option') : domNode.children[i];
+
 				if (typeof(valueLabel) !== 'object') {
 					valueLabel = [valueLabel, valueLabel];
 				}
 
 				el.value = valueLabel[0];
 				el.textContent = valueLabel[1];
-				if (i >= childrenLength) {
+				if (i >= childrenLength - extraOptionOffset) {
 					domNode.appendChild(el);
 				}
 				self._optionValues.push(el.value);
 			});
 			var optionsLength;
-			while (domNode.children.length > optionsLength) {
+			while (domNode.children.length - extraOptionOffset > optionsLength) {
 				domNode.removeChild(domNode.lastChild);
 			}
 			this._setNodeValue(this._value);
