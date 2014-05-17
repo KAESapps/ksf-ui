@@ -6,7 +6,7 @@ define([
 	_WithSize
 ) {
 	return compose(_WithSize, function(label) {
-		this.domNode = document.createElement('div');
+		this.domNode = document.createElement('span');
 		label && this.value(label);
 	}, {
 		value: function(label) {
