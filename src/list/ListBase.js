@@ -30,6 +30,7 @@ define([
 			var beforeCmp = this._components[index];
 			this._root.add(cmp, beforeCmp);
 			this._components.splice(index, 0, cmp);
+			this._style && this._style.items && cmp.style(this._style.items);
 			return cmp;
 		},
 		remove: function(index) {
@@ -46,5 +47,13 @@ define([
 			this._root.clear();
 			destroy(this._components);
 		},
+		style: function(style) {
+			this._style = style;
+			style.root && this._root.style(style.root);
+			style.items && this._components.forEach(function(cmp) {
+				cmp.style(style.items);
+			});
+		},
+
 	});
 });

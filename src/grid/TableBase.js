@@ -25,6 +25,7 @@ define([
 	var BodyContainer = compose(HtmlContainer, {_tag: 'tbody'});
 
 	var Row = compose(_Composite, function () {
+		this._cells = [];
 		this._components = this.own([]);
 	}, {
 		_rootFactory: function() {
@@ -44,6 +45,7 @@ define([
 			var cmp = factory();
 			cmp.value(this.value());
 			var td = new TdContainer();
+			this._style && td.style(this._style);
 			td.add(cmp);
 			this._root.add(td, index);
 			this._components.splice(index, 0, cmp);
@@ -65,9 +67,17 @@ define([
 		active: function(active) {
 			this.domNode.classList[active ? 'add' : 'remove']('active');
 		},
+		style: function(style) {
+			this._style = style;
+			this._root.content().forEach(function(cell) {
+				cell.style(style);
+			});
+		},
 	});
 
-	var Body = compose(ListBase, {
+	var Body = compose(ListBase, function() {
+		this._columns = [];
+	}, {
 		_rootFactory: function() {
 			return new BodyContainer();
 		},
@@ -86,6 +96,50 @@ define([
 				cb(Array.prototype.indexOf.call(bodyNode.children, node));
 			});
 		},
+		addRow: function(value, index) {
+			var row = this.add(value, index);
+			this._columns.forEach(function(column, index) {
+				row.add(column.body, index);
+			});
+		},
+		addColumn: function(col, index) {
+			index === undefined && (index = this._columns.length);
+			this._columns.splice(index, 0, col);
+			this._components.forEach(function(row) {
+				row.add(col.body, index);
+			});
+		},
+		removeColumn: function(index) {
+			this._columns.splice(index, 1);
+			this._components.forEach(function(row) {
+				row.remove(index);
+			});
+		},
+		moveColumn: function(from, to) {
+			var col = this._columns.splice(from, 1)[0];
+			this._columns.splice(to, 0, col);
+			this._components.forEach(function(row) {
+				row.move(from, to);
+			});
+		},
+		value: function(value) {
+			// met à jour la valeur de chaque ligne, en crée si besoin
+			var rows = this._components;
+			value.forEach(function(v, i) {
+				var row = rows[i];
+				if (! row) {
+					row = this.addRow(v, i);
+				} else {
+					rows[i].value(v);
+				}
+			}, this);
+			// et supprime les lignes en trop
+			var valueLength = value.length;
+			while (rows.length > valueLength) {
+				this.removeRow(valueLength);
+			}
+
+		}
 	});
 
 	var HeadRow = compose(ListBase, {
@@ -101,15 +155,15 @@ define([
 			}
 			return th;
 		},
+
 	});
 
 
 	var Grid = compose(_Composite, function() {
-		this._columns = [];
 		this._headRow = this.own(new HeadRow());
 		this._body = this.own(new Body());
 		// layout
-		var thead = new TheadContainer();
+		var thead = this._head = new TheadContainer();
 		thead.add(this._headRow);
 		this._root.add(thead);
 		this._root.add(this._body);
@@ -118,10 +172,7 @@ define([
 			return new TableContainer();
 		},
 		addRow: function(value, index) {
-			var row = this._body.add(value, index);
-			this._columns.forEach(function(column, index) {
-				row.add(column.body, index);
-			});
+			this._body.addRow(value, index);
 		},
 		removeRow: function(index) {
 			this._body.remove(index);
@@ -130,46 +181,21 @@ define([
 			this._body.move(from, to);
 		},
 		addColumn: function(col, index) {
-			index === undefined && (index = this._columns.length);
-			this._columns.splice(index, 0, col);
+			this._body.addColumn(col, index);
 			this._headRow.add(col.head, index);
-			this._body._components.forEach(function(row) {
-				row.add(col.body, index);
-			});
 		},
 		removeColumn: function(index) {
-			this._columns.splice(index, 1);
 			this._headRow.remove(index);
-			this._body._components.forEach(function(row) {
-				row.remove(index);
-			});
+			this._body.removeColumn(index);
 		},
 		moveColumn: function(from, to) {
-			var col = this._columns.splice(from, 1);
-			this._columns.splice(to, 0, col[0]);
 			this._headRow.move(from, to);
-			this._body._components.forEach(function(row) {
-				row.move(from, to);
-			});
+			this._body.moveColumn(from, to);
 		},
 		// permet de manipuler la grille de façon non incrémentale
 		// cela optimise, le rendu en réutilisant les composants existants
 		value: function(value) {
-			// met à jour la valeur de chaque ligne, en crée si besoin
-			var rows = this._body._components;
-			value.forEach(function(v, i) {
-				var row = rows[i];
-				if (! row) {
-					row = this.addRow(v, i);
-				} else {
-					rows[i].value(v);
-				}
-			}, this);
-			// et supprime les lignes en trop
-			var valueLength = value.length;
-			while (rows.length > valueLength) {
-				this.removeRow(valueLength);
-			}
+			this._body.value(value);
 		},
 		active: function(index) {
 			if (arguments.length) {
@@ -181,7 +207,17 @@ define([
 			}
 		},
 		onActiveRequest: function(cb) {
-			this._body.onActiveRequest(cb);
+			return this._body.onActiveRequest(cb);
+		},
+		style: function(style) {
+			this._style = style;
+			style.table && this._root.style(style.table);
+			style.headCells && this._headRow.style({
+				items: style.headCells,
+			});
+			style.bodyCells && this._body.style({
+				items: style.bodyCells,
+			});
 		},
 	});
 
