@@ -23,8 +23,12 @@ define([
 			}, this);
 		},
 		content: function(content) {
-			this.clear();
-			this._appendContent(content);
+			if (arguments.length) {
+				this.clear();
+				this._appendContent(content);
+			} else {
+				return this._children;
+			}
 		},
 		clear: function() {
 			while(this.domNode.lastChild) {
