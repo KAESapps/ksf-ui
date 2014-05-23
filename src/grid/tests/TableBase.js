@@ -49,6 +49,10 @@ define([
 
 	grid.moveRow('ant', null);
 
+	grid.addRow({name: 'Erreur', age: 0}, 'err');
+
+	grid.removeRow('err');
+
 	console.timeEnd('grid by add');
 
 	console.time('grid by value');
