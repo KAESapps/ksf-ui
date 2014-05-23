@@ -39,7 +39,16 @@ define([
 		},
 	}, 'job', 'age');
 
+	grid.moveColumn('age', 'job');
+
 	grid.addRow({name: 'Antonin', age: 3}, 'ant', 'aur');
+
+	grid.moveColumn('nom', null);
+
+	grid.moveRow('syv', 'aur');
+
+	grid.moveRow('ant', null);
+
 	console.timeEnd('grid by add');
 
 	console.time('grid by value');

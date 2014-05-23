@@ -54,8 +54,7 @@ define([
 			cmp.value(this.value());
 
 			this._components[key] = cmp;
-			var td = this._root.add(cmp, key, beforeKey);
-			this._style && td.style(this._style);
+			this._root.add(cmp, key, beforeKey);
 		},
 		remove: function(key) {
 			this._root.remove(key);
@@ -63,7 +62,7 @@ define([
 			delete this._components[key];
 		},
 		move: function(key, beforeKey) {
-			this._root.move(this._components[key], this._components[beforeKey]);
+			this._root.move(key, beforeKey);
 		},
 		clear: function() {
 			this._root.clear();
@@ -73,11 +72,7 @@ define([
 			this.domNode.classList[active ? 'add' : 'remove']('active');
 		},
 		style: function(style) {
-			this._style = style;
-			for (var k in this._components) {
-				var cell = this._components[k];
-				cell.style(style);
-			}
+			this._root.style({ items: style });
 		},
 	});
 
@@ -134,9 +129,10 @@ define([
 		moveColumn: function(key, beforeKey) {
 			this._columnsOrder.splice(this._columnsOrder.indexOf(key), 1);
 			this._columnsOrder.splice(this._columnsOrder.indexOf(beforeKey), 0, key);
-			this._components.forEach(function(row) {
+			for (var rowKey in this._components) {
+				var row = this._components[rowKey];
 				row.move(key, beforeKey);
-			});
+			}
 		},
 		value: function(value) {
 			// met à jour la valeur de chaque ligne, en crée si besoin
