@@ -2,12 +2,14 @@ define([
 	'compose',
 	'ksf/base/_Evented',
 	'ksf/dom/_WithSize',
+	'ksf/dom/style/_Stylable'
 ], function(
 	compose,
 	_Evented,
-	_WithSize
+	_WithSize,
+	_Stylable
 ){
-	return compose(_Evented, _WithSize, function() {
+	return compose(_Evented, _WithSize, _Stylable, function() {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'text';
 		var self = this;

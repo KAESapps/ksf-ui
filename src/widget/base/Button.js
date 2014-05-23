@@ -1,11 +1,13 @@
 define([
 	'compose',
 	'./Label',
-	'./_Clickable'
+	'./_Clickable',
+	'ksf/dom/style/_Stylable'
 ], function(
 	compose,
 	Label,
-	_Clickable
+	_Clickable,
+	_Stylable
 ) {
-	return compose(Label, _Clickable);
+	return compose(Label, _Clickable, _Stylable);
 });
