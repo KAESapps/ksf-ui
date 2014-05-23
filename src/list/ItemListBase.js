@@ -92,6 +92,15 @@ define([
 		destroy: function() {
 			this._destroyAllComponents();
 			_Composite.prototype.destroy.apply(this, arguments);
-		}
+		},
+		style: function(style) {
+			this._style = style;
+			style.root && this._root.style(style.root);
+			if (style.items) {
+				for (var i in this._components) {
+					this._components[i].style(style.items);
+				}
+			}
+		},
 	});
 });

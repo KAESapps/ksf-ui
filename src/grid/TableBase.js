@@ -4,14 +4,14 @@ define([
 	'ksf/base/_Destroyable',
 	'../base/HtmlContainer',
 	'ksf/utils/destroy',
-	'../list/ListBase',
+	'../list/ItemListBase',
 ], function(
 	compose,
 	_Composite,
 	_Destroyable,
 	HtmlContainer,
 	destroy,
-	ListBase
+	ItemListBase
 ){
 	/**
 		Grille non réactive qui permet d'ajouter ou d'enlever des lignes ainsi que des colonnes
@@ -24,41 +24,46 @@ define([
 	var TdContainer = compose(HtmlContainer, {_tag: 'td'});
 	var BodyContainer = compose(HtmlContainer, {_tag: 'tbody'});
 
-	var Row = compose(_Composite, function () {
-		this._cells = [];
-		this._components = this.own([]);
-	}, {
+	var RowContainer = compose(ItemListBase, {
 		_rootFactory: function() {
 			return new TrContainer();
+		},
+		_itemFactory: function(cmp) {
+			return new TdContainer([cmp]);
+		}
+	});
+
+	var Row = compose(_Composite, function () {
+		this._components = this.own({});
+	}, {
+		_rootFactory: function() {
+			return new RowContainer();
 		},
 		value: function(value) {
 			if (arguments.length === 0) {
 				return this._value;
 			}
 			this._value = value;
-			this._components.forEach(function(cmp) {
-				cmp.value(value);
-			});
+			for (var k in this._components) {
+				var cell = this._components[k];
+				cell.value(value);
+			}
 		},
-		add: function(factory, index) {
-			index === undefined && (index = this._components.length);
+		add: function(factory, key, beforeKey) {
 			var cmp = factory();
 			cmp.value(this.value());
-			var td = new TdContainer();
+
+			this._components[key] = cmp;
+			var td = this._root.add(cmp, key, beforeKey);
 			this._style && td.style(this._style);
-			td.add(cmp);
-			this._root.add(td, index);
-			this._components.splice(index, 0, cmp);
 		},
-		remove: function(index) {
-			this._root.remove(index);
-			var cmp = this._components.splice(index, 1);
-			destroy(cmp[0]);
+		remove: function(key) {
+			this._root.remove(key);
+			destroy(this._components[key]);
+			delete this._components[key];
 		},
-		move: function(from, to) {
-			this._root.move(from, to);
-			var cmp = this._components.splice(from, 1);
-			this._components.splice(to, 0, cmp[0]);
+		move: function(key, beforeKey) {
+			this._root.move(this._components[key], this._components[beforeKey]);
 		},
 		clear: function() {
 			this._root.clear();
@@ -69,14 +74,16 @@ define([
 		},
 		style: function(style) {
 			this._style = style;
-			this._root.content().forEach(function(cell) {
+			for (var k in this._components) {
+				var cell = this._components[k];
 				cell.style(style);
-			});
+			}
 		},
 	});
 
-	var Body = compose(ListBase, function() {
-		this._columns = [];
+	var Body = compose(ItemListBase, function() {
+		this._columns = {};
+		this._columnsOrder = [];
 	}, {
 		_rootFactory: function() {
 			return new BodyContainer();
@@ -96,30 +103,39 @@ define([
 				cb(Array.prototype.indexOf.call(bodyNode.children, node));
 			});
 		},
-		addRow: function(value, index) {
-			var row = this.add(value, index);
-			this._columns.forEach(function(column, index) {
-				row.add(column.body, index);
+		addRow: function(value, key, beforeKey) {
+			var row = this.add(value, key, beforeKey);
+			var columns = this._columns;
+			this._columnsOrder.forEach(function(key) {
+				var column = columns[key];
+				row.add(column.body, key);
 			});
 		},
-		addColumn: function(col, index) {
-			index === undefined && (index = this._columns.length);
-			this._columns.splice(index, 0, col);
-			this._components.forEach(function(row) {
-				row.add(col.body, index);
-			});
+		addColumn: function(col, key, beforeKey) {
+			this._columns[key] = col;
+			if (beforeKey) {
+				this._columnsOrder.splice(this._columnsOrder.indexOf(beforeKey), 0, key);
+			} else {
+				this._columnsOrder.push(key);
+			}
+			for (var rowKey in this._components) {
+				var row = this._components[rowKey];
+				row.add(col.body, key, beforeKey);
+			}
 		},
-		removeColumn: function(index) {
-			this._columns.splice(index, 1);
-			this._components.forEach(function(row) {
-				row.remove(index);
-			});
+		removeColumn: function(key) {
+			delete this._columns[key];
+			this._columnsOrder.splice(this._columnsOrder.indexOf(key), 1);
+			for (var rowKey in this._components) {
+				var row = this._components[rowKey];
+				row.remove(key);
+			}
 		},
-		moveColumn: function(from, to) {
-			var col = this._columns.splice(from, 1)[0];
-			this._columns.splice(to, 0, col);
+		moveColumn: function(key, beforeKey) {
+			this._columnsOrder.splice(this._columnsOrder.indexOf(key), 1);
+			this._columnsOrder.splice(this._columnsOrder.indexOf(beforeKey), 0, key);
 			this._components.forEach(function(row) {
-				row.move(from, to);
+				row.move(key, beforeKey);
 			});
 		},
 		value: function(value) {
@@ -142,7 +158,7 @@ define([
 		}
 	});
 
-	var HeadRow = compose(ListBase, {
+	var HeadRow = compose(ItemListBase, {
 		_rootFactory: function() {
 			return new TrContainer();
 		},
@@ -171,26 +187,26 @@ define([
 		_rootFactory: function() {
 			return new TableContainer();
 		},
-		addRow: function(value, index) {
-			this._body.addRow(value, index);
+		addRow: function(value, key, beforeKey) {
+			this._body.addRow(value, key, beforeKey);
 		},
-		removeRow: function(index) {
-			this._body.remove(index);
+		removeRow: function(key) {
+			this._body.remove(key);
 		},
-		moveRow: function(from, to) {
-			this._body.move(from, to);
+		moveRow: function(key, beforeKey) {
+			this._body.move(key, beforeKey);
 		},
-		addColumn: function(col, index) {
-			this._body.addColumn(col, index);
-			this._headRow.add(col.head, index);
+		addColumn: function(col, key, beforeKey) {
+			this._body.addColumn(col, key, beforeKey);
+			this._headRow.add(col.head, key, beforeKey);
 		},
-		removeColumn: function(index) {
-			this._headRow.remove(index);
-			this._body.removeColumn(index);
+		removeColumn: function(key) {
+			this._headRow.remove(key);
+			this._body.removeColumn(key);
 		},
-		moveColumn: function(from, to) {
-			this._headRow.move(from, to);
-			this._body.moveColumn(from, to);
+		moveColumn: function(key, beforeKey) {
+			this._headRow.move(key, beforeKey);
+			this._body.moveColumn(key, beforeKey);
 		},
 		// permet de manipuler la grille de façon non incrémentale
 		// cela optimise, le rendu en réutilisant les composants existants

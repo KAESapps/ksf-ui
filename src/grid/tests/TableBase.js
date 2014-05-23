@@ -1,7 +1,7 @@
 define([
 	'compose',
 	'../TableBase',
-	'../../widget/Label',
+	'../../widget/base/Label',
 ], function(
 	compose,
 	TableBase,
@@ -20,15 +20,15 @@ define([
 		body: function() {
 			return compose.create(PropRenderer, {_prop: 'name'});
 		}
-	});
+	}, 'nom');
 	grid.addColumn({
 		head: "Age",
 		body: function() {
 			return compose.create(PropRenderer, {_prop: 'age'});
 		},
-	});
-	grid.addRow({name: "Sylvain", age: 32});
-	grid.addRow({name: "Aurélie", age: 31});
+	}, 'age');
+	grid.addRow({name: "Sylvain", age: 32}, 'syv');
+	grid.addRow({name: "Aurélie", age: 31}, 'aur');
 
 	document.body.appendChild(grid.domNode);
 
@@ -37,9 +37,9 @@ define([
 		body: function() {
 			return compose.create(PropRenderer, {_prop: 'job'});
 		},
-	}, 1);
+	}, 'job', 'age');
 
-	grid.addRow({name: 'Antonin', age: 3}, 1);
+	grid.addRow({name: 'Antonin', age: 3}, 'ant', 'aur');
 	console.timeEnd('grid by add');
 
 	console.time('grid by value');
@@ -50,19 +50,19 @@ define([
 		body: function() {
 			return compose.create(PropRenderer, {_prop: 'name'});
 		}
-	});
+	}, 'nom');
 	grid2.addColumn({
 		head: "Age",
 		body: function() {
 			return compose.create(PropRenderer, {_prop: 'age'});
 		},
-	});
+	}, 'age');
 	grid2.addColumn({
 		head: "Job",
 		body: function() {
 			return compose.create(PropRenderer, {_prop: 'job'});
 		},
-	}, 1);
+	}, 'job', 'age');
 
 	var value = window.value = [];
 	for (var i=0; i<1000; i++) {
