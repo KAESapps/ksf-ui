@@ -9,20 +9,20 @@ define([
 ){
 	return compose(_Evented, _WithSize, function(options, value) {
 		this.domNode = document.createElement('select');
-		this._options(options);
+		options && this.options(options);
 		value && this.value(value);
 		var self = this;
 		this.domNode.addEventListener('change', function() {
 			self._emit('input', self.domNode.value);
 		});
 	}, {
-		_options: function(options) {
-			var root = this.domNode;
+		options: function(options) {
+			this.domNode.innerHTML = "";
 			for (var i = 0 ;  i < options.length ; i = i+2) {
 				var optionNode = document.createElement('option');
 				optionNode.value = options[i];
 				optionNode.textContent = options[i+1];
-				root.appendChild(optionNode);
+				this.domNode.appendChild(optionNode);
 			}
 		},
 		value: function(value) {
