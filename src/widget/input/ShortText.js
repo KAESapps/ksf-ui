@@ -11,6 +11,7 @@ define([
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'text';
 		if (options && options.placeholder) { this.domNode.placeholder = options.placeholder; }
+		if (options && options.value !== undefined) { this.value(options.value); }
 		var self = this;
 		this.domNode.addEventListener('input', function() {
 			self._emit('input', self.domNode.value);
