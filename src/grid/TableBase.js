@@ -90,12 +90,20 @@ define([
 		},
 		onActiveRequest: function(cb) {
 			var bodyNode = this.domNode;
+			var components = this._components;
 			this.domNode.addEventListener('click', function(ev) {
 				var node = ev.target;
 				while(node.parentNode !== bodyNode) {
 					node = node.parentNode;
 				}
-				cb(Array.prototype.indexOf.call(bodyNode.children, node));
+				var rowKey;
+				for (var key in components) {
+					if (components[key].domNode === node) {
+						rowKey = key;
+						break;
+					}
+				}
+				cb(rowKey);
 			});
 		},
 		addRow: function(value, key, beforeKey) {
@@ -134,7 +142,8 @@ define([
 				row.move(key, beforeKey);
 			}
 		},
-		value: function(value) {
+		// deprecated
+/*		value: function(value) {
 			// met à jour la valeur de chaque ligne, en crée si besoin
 			var rows = this._components;
 			value.forEach(function(v, i) {
@@ -150,9 +159,8 @@ define([
 			while (rows.length > valueLength) {
 				this.removeRow(valueLength);
 			}
-
-		}
-	});
+		},
+*/	});
 
 	var HeadRow = compose(ItemListBase, {
 		_rootFactory: function() {
@@ -209,14 +217,8 @@ define([
 		value: function(value) {
 			this._body.value(value);
 		},
-		active: function(index) {
-			if (arguments.length) {
-				this._activeRow && this._activeRow.active(false);
-				this._activeRow = this._body._components[index];
-				this._activeRow && this._activeRow.active(true);
-			} else {
-				return this._body._components.indexOf(this._activeRow);
-			}
+		active: function(key) {
+			return arguments.length ? this._body.active(key) : this._body.active();
 		},
 		onActiveRequest: function(cb) {
 			return this._body.onActiveRequest(cb);
