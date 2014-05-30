@@ -197,6 +197,9 @@ define([
 		removeRow: function(key) {
 			this._body.remove(key);
 		},
+		removeAllRows: function() {
+			this._body.clear();
+		},
 		moveRow: function(key, beforeKey) {
 			this._body.move(key, beforeKey);
 		},
