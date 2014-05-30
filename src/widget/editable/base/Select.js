@@ -1,11 +1,13 @@
 define([
 	'compose',
-	'ksf/base/_Evented'
+	'ksf/base/_Evented',
+	'ksf/dom/style/_Stylable'
 ], function(
 	compose,
-	Evented
+	Evented,
+	_Stylable
 ){
-	return compose(Evented, function() {
+	return compose(Evented, _Stylable, function() {
 		this.domNode = document.createElement('select');
 		this._optionValues = [];
 

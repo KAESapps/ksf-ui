@@ -12,6 +12,9 @@ define([
 	return compose(_Composite, _WithAccessor, {
 		_rootFactory: function() {
 			return new NumberWidget();
+		},
+		style: function(style) {
+			this._root.style(style);
 		}
 	});
 });

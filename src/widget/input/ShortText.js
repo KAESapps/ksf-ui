@@ -1,13 +1,15 @@
 define([
 	'compose',
 	'ksf/base/_Evented',
-	'ksf/dom/_WithSize'
+	'ksf/dom/_WithSize',
+	'ksf/dom/style/_Stylable'
 ], function(
 	compose,
 	_Evented,
-	_WithSize
+	_WithSize,
+	_Stylable
 ){
-	return compose(_Evented, _WithSize, function(options) {
+	return compose(_Evented, _WithSize, _Stylable, function(options) {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'text';
 		if (options && options.placeholder) { this.domNode.placeholder = options.placeholder; }
@@ -27,6 +29,9 @@ define([
 		},
 		_setNodeValue: function(value) {
 			this.domNode.value = value === undefined ? null : value;
+		},
+		onInput: function(cb) {
+			return this._on('input', cb);
 		}
 	});
 });

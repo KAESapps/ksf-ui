@@ -9,7 +9,7 @@ define([
 	_WithSize,
 	_Stylable
 ){
-	return compose(_Evented, _WithSize, _Stylable, function() {
+	return compose(_Evented, _WithSize, _Stylable, function(value) {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'text';
 		var self = this;
@@ -22,6 +22,7 @@ define([
 				changing = false;
 			}
 		});
+		if (value !== undefined ) { this.value(value); }
 	}, {
 		value: function(value) {
 			if (arguments.length > 0) {
