@@ -15,10 +15,8 @@ define([
 		if (options && options.placeholder) { this.domNode.placeholder = options.placeholder; }
 		if (options && options.value !== undefined) { this.value(options.value); }
 		var self = this;
-		this.domNode.addEventListener('keypress', function(ev) {
-			if (ev.keyCode === 13) {
-				self._emit('input', self.domNode.value);
-			}
+		this.domNode.addEventListener('input', function() {
+			self._emit('input', self.domNode.value);
 		});
 	}, {
 		value: function(value) {
