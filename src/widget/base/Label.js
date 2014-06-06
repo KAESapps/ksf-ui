@@ -7,10 +7,10 @@ define([
 	_WithSize,
 	_Stylable
 ) {
-	return compose(_WithSize, _Stylable, function(label) {
+	return compose(function(label) {
 		this.domNode = document.createElement('span');
 		label && this.value(label);
-	}, {
+	}, _WithSize, _Stylable, {
 		value: function(label) {
 			this.domNode.textContent = (label === undefined ? null : label);
 		}
