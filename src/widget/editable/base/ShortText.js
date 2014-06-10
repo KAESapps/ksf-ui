@@ -38,5 +38,8 @@ define([
 		onInput: function(cb) {
 			return this._on('input', cb);
 		},
+		focus: function() {
+			this.domNode.focus();
+		}
 	});
 });

@@ -15,9 +15,13 @@ define([
 		if (options && options.placeholder) { this.domNode.placeholder = options.placeholder; }
 		if (options && options.value !== undefined) { this.value(options.value); }
 		var self = this;
-		this.domNode.addEventListener('keypress', function(ev) {
-			if (ev.keyCode === 13) {
+
+		var changing = false;
+		this.domNode.addEventListener('change', function() {
+			if (!changing) {
+				changing = true;
 				self._emit('input', self.domNode.value);
+				changing = false;
 			}
 		});
 	}, {
@@ -34,6 +38,17 @@ define([
 		},
 		onInput: function(cb) {
 			return this._on('input', cb);
+		},
+		focus: function() {
+			this.domNode.focus();
+		},
+		onBlur: function(cb) {
+			var domNode = this.domNode,
+				domEventName = 'blur';
+			domNode.addEventListener(domEventName, cb);
+			return function() {
+				domNode.removeEventListener(domEventName, cb);
+			};
 		}
 	});
 });

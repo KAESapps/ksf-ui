@@ -18,6 +18,9 @@ define([
 	}, {
 		style: function(style) {
 			this._root.style(style);
+		},
+		focus: function() {
+			this._root.focus();
 		}
 	});
 });
