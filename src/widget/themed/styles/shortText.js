@@ -1,7 +1,6 @@
 define({
-	font: 'inherit',
-	padding: '0.5em',
+	padding: '0.5ex',
 	margin: 0,
-	borderRadius: '4px',
+	borderRadius: '2px',
 	border: '1px solid #ccc',
 });
