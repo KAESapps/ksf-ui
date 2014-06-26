@@ -9,7 +9,7 @@ define([
 ) {
 	return compose(function(label) {
 		this.domNode = document.createElement('span');
-		label && this.value(label);
+		this.value(label);
 	}, _WithSize, _Stylable, {
 		value: function(label) {
 			this.domNode.textContent = (label === undefined ? null : label);
