@@ -17,7 +17,8 @@ define([
 			this._field.inDom && this._field.inDom(inDom);
 		},
 		style: function(style) {
-			style.apply(this._label);
+			style.root && style.root.apply(this.domNode);
+			style.label && style.label.apply(this._label);
 		},
 	});
 });
