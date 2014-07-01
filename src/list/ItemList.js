@@ -30,11 +30,7 @@ define([
 					value: sortedStore.item(key)
 				};
 			}));
-			if (this._contentCanceler) {
-				this._contentCanceler();
-				this.unown(this._contentCanceler);
-			}
-			this._contentCanceler = this.own(sortedStore.onChange(function(changes) {
+			this._own(sortedStore.onChange(function(changes) {
 				var newStoreValue = sortedStore.value();
 				changes.forEach(function(change) {
 					if (change.type === 'remove') {
@@ -50,7 +46,7 @@ define([
 					}
 				});
 				storeValue = newStoreValue;
-			}));
+			}), 'contentObserver');
 		},
 		active: function(key) {
 			if (arguments.length) {

@@ -34,7 +34,7 @@ define([
 	});
 
 	var Row = compose(_Composite, function () {
-		this._components = this.own({});
+		this._components = this._own({});
 	}, {
 		_rootFactory: function() {
 			return new RowContainer();
@@ -169,7 +169,7 @@ define([
 		_itemFactory: function(headCmp) {
 			var th = new ThContainer();
 			if (headCmp.domNode) {
-				th.add(th.own(headCmp)); // headCmp is destroyed when the column is removed
+				th.add(th._own(headCmp)); // headCmp is destroyed when the column is removed
 			} else {
 				th.domNode.textContent = headCmp;
 			}
@@ -180,8 +180,8 @@ define([
 
 
 	var Grid = compose(_Composite, function() {
-		this._headRow = this.own(new HeadRow());
-		this._body = this.own(new Body());
+		this._headRow = this._own(new HeadRow());
+		this._body = this._own(new Body());
 		// layout
 		var thead = this._head = new TheadContainer();
 		thead.add(this._headRow);

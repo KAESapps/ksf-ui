@@ -36,7 +36,7 @@ define([
 		_createComponent: function(value) {
 			var self = this;
 			var cmp = this._itemFactory(value);
-			cmp.onActiveRequest && cmp.own(cmp.onActiveRequest(function() {
+			cmp.onActiveRequest && cmp._own(cmp.onActiveRequest(function() {
 				self._emit('activeRequest', value);
 			}));
 			return cmp;
