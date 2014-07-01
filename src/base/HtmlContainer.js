@@ -26,6 +26,7 @@ define([
 			if (arguments.length) {
 				this.clear();
 				this._appendContent(content);
+				return this;
 			} else {
 				return this._children;
 			}
