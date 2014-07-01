@@ -2,14 +2,16 @@ define([
 	'compose',
 	'ksf/base/_Evented',
 	'ksf/dom/_WithSize',
-	'ksf/dom/style/_Stylable'
+	'ksf/dom/style/_Stylable',
+	'ksf/base/Chainable',
 ], function(
 	compose,
 	_Evented,
 	_WithSize,
-	_Stylable
+	_Stylable,
+	_Chainable
 ){
-	return compose(_Evented, _WithSize, _Stylable, function(options, value) {
+	return compose(_Chainable, _Evented, _WithSize, _Stylable, function(options, value) {
 		this.domNode = document.createElement('select');
 		options && this.options(options);
 		this.value(value ? value : ''); // on force une valeur nulle car sinon, c'est automatiquement la première option qui est sélectionnée par le navigateur
