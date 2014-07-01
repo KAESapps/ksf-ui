@@ -9,14 +9,18 @@ define([
 ){
 	return compose(_WithSize, _Boundable, function(content) {
 		this.domNode = document.createElement('div');
-		content && this.content(content);
+		this.content(content);
 	}, {
 		content: function(content) {
+			// remove previous content
 			this._child && this.domNode.removeChild(this._child.domNode);
 			this._childInDom(false);
-			this.domNode.appendChild(content.domNode);
+			// set new content
 			this._child = content;
-			this._childInDom(this._inDom);
+			if (content && content.domNode) {
+				this.domNode.appendChild(content.domNode);
+				this._childInDom(this._inDom);
+			}
 		},
 		_childInDom: function(inDom) {
 			this._child && this._child.inDom && this._child.inDom(inDom);
