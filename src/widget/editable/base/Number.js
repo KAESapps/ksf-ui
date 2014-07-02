@@ -1,13 +1,15 @@
 define([
 	'compose',
 	'ksf/base/_Evented',
-	'ksf/dom/style/_Stylable'
+	'ksf/dom/style/_Stylable',
+	'../../base/_Focusable'
 ], function(
 	compose,
 	_Evented,
-	_Stylable
+	_Stylable,
+	_Focusable
 ){
-	return compose(_Evented, _Stylable, function() {
+	return compose(_Evented, _Stylable, _Focusable, function() {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'number';
 		var self = this;

@@ -2,14 +2,16 @@ define([
 	'compose',
 	'ksf/base/_Evented',
 	'ksf/dom/_WithSize',
-	'ksf/dom/style/_Stylable'
+	'ksf/dom/style/_Stylable',
+	'../../base/_Focusable'
 ], function(
 	compose,
 	_Evented,
 	_WithSize,
-	_Stylable
+	_Stylable,
+	_Focusable
 ){
-	return compose(_Evented, _WithSize, _Stylable, function(value) {
+	return compose(_Evented, _WithSize, _Stylable, _Focusable, function(value) {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'text';
 		var self = this;
@@ -38,8 +40,5 @@ define([
 		onInput: function(cb) {
 			return this._on('input', cb);
 		},
-		focus: function() {
-			this.domNode.focus();
-		}
 	});
 });

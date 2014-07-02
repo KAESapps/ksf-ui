@@ -18,6 +18,9 @@ define([
 	}, {
 		focus: function() {
 			this._root.focus();
+		},
+		onBlur: function(cb) {
+			return this._root.onBlur(cb);
 		}
 	});
 });

@@ -11,7 +11,7 @@ define([
 ) {
 	return compose(function(label) {
 		this.domNode = document.createElement('span');
-		this.value(label);
+		label !== undefined && this.value(label);
 	}, _WithSize, _Stylable, Chainable, {
 		value: function(label) {
 			this.domNode.textContent = (label === undefined ? null : label);
