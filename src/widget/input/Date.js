@@ -6,13 +6,13 @@ define([
 	_DomInput
 ){
 	return compose(_DomInput, function() {
-		this.domNode.type = 'number';
+		this.domNode.type = 'date';
 	}, {
 		_getValue: function() {
-			return this.domNode.valueAsNumber;
+			return this.domNode.valueAsDate;
 		},
 		_setValue: function(value) {
-			this.domNode.valueAsNumber = value;
+			this.domNode.valueAsDate = value;
 		},
 	});
 });
