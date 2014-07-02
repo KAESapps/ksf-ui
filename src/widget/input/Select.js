@@ -20,7 +20,7 @@ define([
 			this.value((args.value !== undefined) ? args.value : null);
 			if (args.extraValueLabel !== undefined) { this._extraLabel = args.extraValueLabel; }
 		} else {
-			 // on force une valeur nulle car sinon, c'est automatiquement la première option qui est sélectionnée par le navigateur
+			// on force une valeur nulle car sinon, c'est automatiquement la première option qui est sélectionnée par le navigateur
 			this.options([]);
 			this._setValue(null);
 		}
@@ -54,6 +54,7 @@ define([
 			var domNode = this.domNode;
 			// clear options
 			var optionValues = this._optionValues = [];
+			delete this._extraOption;
 			while (domNode.lastChild) {
 				domNode.removeChild(domNode.lastChild);
 			}
@@ -69,12 +70,14 @@ define([
 				domNode.appendChild(el);
 				optionValues.push(el.value);
 			});
-			
+
 			this._setValue(this._getValue());
+			return this;
 		},
 		value: function(value) {
 			if (arguments.length > 0) {
 				this._setValue(value);
+				return this;
 			} else {
 				return this._getValue();
 			}
