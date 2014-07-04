@@ -15,37 +15,27 @@ define([
 ){
 	return compose(_Chainable, _Evented, _WithSize, _Stylable, _Focusable, function(args) {
 		this.domNode = document.createElement('select');
-		if (args !== undefined) {
-			args.options && this.options(args.options);
-			this.value((args.value !== undefined) ? args.value : null);
-			if (args.extraValueLabel !== undefined) { this._extraLabel = args.extraValueLabel; }
-		} else {
-			// on force une valeur nulle car sinon, c'est automatiquement la première option qui est sélectionnée par le navigateur
-			this.options([]);
-			this._setValue(null);
+		if (args === undefined) {
+			args = {};
 		}
+		this.options(args.options || []);
+		// on force une valeur nulle car sinon, c'est automatiquement la première option qui est sélectionnée par le navigateur
+		this._setValue((args.value !== undefined) ? args.value : null);
+
 		var self = this;
 		this.domNode.addEventListener('change', function() {
 			self._value = self.domNode.value;
 			self._emit('input', self._value);
 		});
 	}, {
-		_extraLabel: "",
 		_setValue: function(value) {
 			if (value === undefined) { return; }
-
-			if (this._extraOption) {
-				this.domNode.removeChild(this._extraOption);
-			}
-			delete this._extraOption;
+			
 			if (this._optionValues.indexOf(value) === -1) {
-				var opt = document.createElement('option');
-				opt.value = value;
-				opt.textContent = this._extraLabel;
-				this.domNode.insertBefore(opt, this.domNode.firstChild);
-				this._extraOption = opt;
+				this.domNode.selectedIndex = -1;
+			} else {
+				this.domNode.value = value;
 			}
-			this.domNode.value = value;
 			this._value = value;
 		},
 		_getValue: function() {
