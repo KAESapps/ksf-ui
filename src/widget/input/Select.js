@@ -26,7 +26,8 @@ define([
 		}
 		var self = this;
 		this.domNode.addEventListener('change', function() {
-			self._emit('input', self.domNode.value);
+			self._value = self.domNode.value;
+			self._emit('input', self._value);
 		});
 	}, {
 		_extraLabel: "",
