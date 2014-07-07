@@ -28,6 +28,7 @@ define([
 			if (arguments.length > 0) {
 				// value est settable programmatiquement pour initialiser la valeur mais ne déclenche pas un événement 'input'
 				this._setValue(value);
+				return this;
 			} else {
 				return this._getValue();
 			}
