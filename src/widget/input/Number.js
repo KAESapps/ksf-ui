@@ -12,7 +12,11 @@ define([
 			return this.domNode.valueAsNumber;
 		},
 		_setValue: function(value) {
-			this.domNode.valueAsNumber = value;
+			if (value === null) {
+				this.domNode.value = null;
+			} else {
+				this.domNode.valueAsNumber = value;
+			}
 		},
 	});
 });
