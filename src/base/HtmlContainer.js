@@ -55,7 +55,9 @@ define([
 			child.inDom && child.inDom(false);
 		},
 		move: function(child, beforeChild) {
+			child.inDom && child.inDom(false);
 			this.domNode.insertBefore(child.domNode, beforeChild && beforeChild.domNode);
+			child.inDom && child.inDom(this._inDom);
 		},
 		inDom: function(inDom) {
 			this._children.forEach(function(child) {
