@@ -19,8 +19,9 @@ define([
 			args = {};
 		}
 		this.options(args.options || []);
-		// on force une valeur nulle car sinon, c'est automatiquement la première option qui est sélectionnée par le navigateur
-		this._setValue((args.value !== undefined) ? args.value : null);
+		
+		// valeur initiale
+		this._value = (args.value !== undefined) ? args.value : null;
 
 		var self = this;
 		this.domNode.addEventListener('change', function() {
@@ -76,8 +77,10 @@ define([
 		onInput: function(cb) {
 			return this._on('input', cb);
 		},
-		inDom: function() {
-			this._setValue(this._getValue());
+		inDom: function(inDom) {
+			// on force le rafraîchissement de la valeur,
+			// sinon c'est la première option qui est sélectionnée par le navigateur
+			inDom && this._setValue(this._getValue());
 		},
 	});
 });
