@@ -1,10 +1,12 @@
 define([
 	'compose',
 	'ksf/dom/composite/_Composite',
+	'ksf/dom/composite/_RootStylable',
 	'./ItemListBase'
 ], function(
 	compose,
 	_Composite,
+	_RootStylable,
 	ItemListBase
 ){
 	/**
@@ -12,7 +14,7 @@ define([
 		A la différence d'une liste destinée à afficher le contenu d'un array, on passe à la factory un itemAcessor et non pas la valeur du array directement
 	*/
 
-	return compose(_Composite, {
+	return compose(_Composite, _RootStylable, {
 		_rootFactory: function() {
 			// TODO: permettre d'injecter plus facilement le "root", c'est à dire un MapContainer, c'est à dire un objet avec une factory et des méthodes content, add, remove, move et clear
 			// en fait, il faudrait peut-être plutôt faire un mixin "list/_WithSortedAccessorContent"

@@ -31,6 +31,11 @@ define([
 				self._components[item.key] = cmp;
 				return cmp;
 			});
+			if (this._style && this._style.items) {
+				for (var i in cmps) {
+					cmps[i].style(this._style.items);
+				}
+			}
 			this._root.content(cmps);
 		},
 		_createComponent: function(value) {
