@@ -9,7 +9,12 @@ define([
 		this.domNode.type = 'number';
 	}, {
 		_getValue: function() {
-			return this.domNode.valueAsNumber;
+			var input = this.domNode.valueAsNumber;
+			if (isNaN(input)) {
+				return null;
+			} else {
+				return input;
+			}
 		},
 		_setValue: function(value) {
 			if (value === null) {
