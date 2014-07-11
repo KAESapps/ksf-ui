@@ -72,7 +72,7 @@ define([
 			this.domNode.classList[active ? 'add' : 'remove']('active');
 		},
 		style: function(style) {
-			this._root.style({ items: style });
+			this._root.style(style);
 		},
 	});
 
@@ -233,7 +233,10 @@ define([
 				items: style.headCells,
 			});
 			style.bodyCells && this._body.style({
-				items: style.bodyCells,
+				items: {
+					root: style.rows,
+					items: style.bodyCells,
+				}
 			});
 		},
 	});
