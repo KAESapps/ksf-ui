@@ -2,14 +2,14 @@ define([
 	'compose',
 	'ksf/dom/_WithSize',
 	'ksf/dom/style/_Stylable',
-	'ksf/base/Chainable',
+	'ksf/base/_Chainable',
 	'./_Clickable',
 	'./_Focusable'
 ], function(
 	compose,
 	_WithSize,
 	_Stylable,
-	Chainable,
+	_Chainable,
 	_Clickable,
 	_Focusable
 ) {
@@ -17,7 +17,7 @@ define([
 		this.domNode = document.createElement('button');
 		label !== undefined && this.value(label);
 	},
-	_WithSize, _Stylable, Chainable, _Clickable, _Focusable, {
+	_WithSize, _Stylable, _Chainable, _Clickable, _Focusable, {
 		value: function(label) {
 			this.domNode.textContent = (label === undefined ? null : label);
 		}

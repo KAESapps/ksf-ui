@@ -3,17 +3,17 @@ define([
 	'ksf/base/_Evented',
 	'ksf/dom/_WithSize',
 	'ksf/dom/style/_Stylable',
-	'ksf/base/Chainable',
+	'ksf/base/_Chainable',
 	'../base/_Focusable',
 ], function(
 	compose,
 	_Evented,
 	_WithSize,
 	_Stylable,
-	_Chainable,
+	__Chainable,
 	_Focusable
 ){
-	return compose(_Chainable, _Evented, _WithSize, _Stylable, _Focusable, function(args) {
+	return compose(__Chainable, _Evented, _WithSize, _Stylable, _Focusable, function(args) {
 		this.domNode = document.createElement('select');
 		if (args === undefined) {
 			args = {};
