@@ -83,12 +83,12 @@ define([
 		active: function(key) {
 			var activeRow;
 			if (arguments.length) {
-				if (this._activeKey !== null) {
+				if (this._activeKey in this._components) {
 					activeRow = this._components[this._activeKey];
 					activeRow.active(false);
 				}
 				this._activeKey = key;
-				if (key !== null) {
+				if (key in this._components) {
 					activeRow = this._components[key];
 					activeRow.active(true);
 				}
