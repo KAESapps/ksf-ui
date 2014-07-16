@@ -1,16 +1,19 @@
 define([
 	'compose',
 	'ksf/base/_Destroyable',
+	'ksf/base/_Evented',
 	'ksf/dom/_WithSize',
 	'ksf/dom/_Boundable',
 ], function(
 	compose,
 	_Destroyable,
+	_Evented,
 	_WithSize,
 	_Boundable
 ){
 
-	return compose(_Destroyable, _WithSize, _Boundable, function(toggle, dropDown) {
+	return compose(_Destroyable, _Evented, _WithSize, _Boundable, function(toggle, dropDown) {
+		var self = this;
 		this.domNode = document.createElement('div');
 		this._own(toggle, 'toggle');
 		this._own(dropDown, 'dropDown');
@@ -24,6 +27,18 @@ define([
 
 		toggle.onAction(this.toggle.bind(this));
 
+		// blur event
+		toggle.onBlur(function() {
+			if (!dropDown.focused()) {
+				self._emit('blur');
+			}
+		});
+		dropDown.onBlur(function() {
+			if (!toggle.focused()) {
+				self._emit('blur');
+			}
+		});
+
 		// auto close on blur
 		this.onBlur(this.close.bind(this));
 	}, {
@@ -34,7 +49,6 @@ define([
 		},
 		close: function() {
 			this._owned.dropDown.domNode.style.display = 'none';
-			// this._owned.toggle.focus();
 			this._opened = false;
 		},
 		toggle: function() {
@@ -60,32 +74,8 @@ define([
 		Firefox n'implémente pas focusin et focusout, donc on utilise l'événement 'blur' en mode 'capturing'
 		Firefox n'alimente pas la propriété 'relatedTarget' de l'événement donc on utilise un setTimeout pour savoir quel est l'élément effectivement activé via document.activeElement
 		*/
-		onBlur: function(clientCb) {
-			var domNode = this.domNode;
-			var toggle = this._owned.toggle;
-			var dropDown = this._owned.dropDown;
-
-			var callClientCb = function(activeElement) {
-				if (activeElement !== toggle.domNode && activeElement !== dropDown.domNode) {
-					clientCb();
-				}
-			};
-			var cb = function(ev) {
-				var activeElement = ev.relatedTarget;
-				if (!activeElement) {
-					setTimeout(function() {
-						activeElement = document.activeElement;
-						callClientCb(activeElement);
-					});
-				} else {
-					callClientCb(activeElement);
-				}
-			};
-
-			domNode.addEventListener('blur', cb, true);
-			return function() {
-				domNode.removeEventListener('blur', cb, true);
-			};
+		onBlur: function(cb) {
+			return this._on('blur', cb);
 		},
 		onFocus: function() {},
 	});
