@@ -1,11 +1,13 @@
 define([
 	'compose',
-	'./_DomInput'
+	'./_DomInput',
+	'../base/_Focusable',
 ], function(
 	compose,
-	_DomInput
+	_DomInput,
+	_Focusable
 ){
-	return compose(_DomInput, function(options) {
+	return compose(_DomInput, _Focusable, function(options) {
 		this.domNode.type = 'text';
 		if (options && options.placeholder) { this.domNode.placeholder = options.placeholder; }
 		if (options && options.value !== undefined) { this.value(options.value); }
