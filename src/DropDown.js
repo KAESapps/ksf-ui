@@ -4,15 +4,17 @@ define([
 	'ksf/base/_Evented',
 	'ksf/dom/_WithSize',
 	'ksf/dom/_Boundable',
+	'ksf/dom/style/_Stylable',
 ], function(
 	compose,
 	_Destroyable,
 	_Evented,
 	_WithSize,
-	_Boundable
+	_Boundable,
+	_Stylable
 ){
 
-	return compose(_Destroyable, _Evented, _WithSize, _Boundable, function(toggle, dropDown) {
+	return compose(_Destroyable, _Evented, _WithSize, _Boundable, _Stylable, function(toggle, dropDown) {
 		var self = this;
 		this.domNode = document.createElement('div');
 		this._own(toggle, 'toggle');

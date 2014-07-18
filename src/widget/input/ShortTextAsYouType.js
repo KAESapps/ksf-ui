@@ -1,15 +1,19 @@
 define([
 	'compose',
 	'ksf/base/_Evented',
+	'ksf/base/_Chainable',
 	'ksf/dom/_WithSize',
-	'ksf/dom/style/_Stylable'
+	'ksf/dom/style/_Stylable',
+	'../base/_Focusable',
 ], function(
 	compose,
 	_Evented,
+	_Chainable,
 	_WithSize,
-	_Stylable
+	_Stylable,
+	_Focusable
 ){
-	return compose(_Evented, _WithSize, _Stylable, function(options) {
+	return compose(_Evented, _Chainable, _Focusable, _WithSize, _Stylable, function(options) {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'text';
 		if (options && options.placeholder) { this.domNode.placeholder = options.placeholder; }
