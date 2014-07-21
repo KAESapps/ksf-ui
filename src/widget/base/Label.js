@@ -14,7 +14,11 @@ define([
 		label !== undefined && this.value(label);
 	}, _WithSize, _Stylable, _Chainable, {
 		value: function(label) {
-			this.domNode.textContent = (label === undefined ? null : label);
+			if (arguments.length) {
+				this.domNode.textContent = (label === undefined ? null : label);
+			} else {
+				return this.domNode.textContent;
+			}
 		}
 	});
 });
