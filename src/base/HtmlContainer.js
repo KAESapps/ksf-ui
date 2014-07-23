@@ -1,15 +1,17 @@
 define([
 	'compose',
 	'ksf/dom/_WithSize',
+	'ksf/dom/_Positionable',
 	'ksf/dom/_Boundable',
 	'ksf/dom/style/_Stylable',
 ], function(
 	compose,
 	_WithSize,
+	_Positionable,
 	_Boundable,
 	_Stylable
 ){
-	return compose(_WithSize, _Boundable, _Stylable, function(content) {
+	return compose(_WithSize, _Boundable, _Positionable, _Stylable, function(content) {
 		this.domNode = document.createElement(this._tag);
 		this._children = [];
 		content && this._appendContent(content);

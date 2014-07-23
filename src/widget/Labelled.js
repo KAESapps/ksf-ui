@@ -1,11 +1,13 @@
 define([
 	'compose',
 	'ksf/dom/_WithSize',
+	'ksf/dom/_Positionable',
 ], function(
 	compose,
-	_WithSize
+	_WithSize,
+	_Positionable
 ) {
-	return compose(_WithSize, function(field, label) {
+	return compose(_WithSize, _Positionable, function(field, label) {
 		this.domNode = document.createElement('label');
 		this._label = document.createElement('span');
 		this._label.textContent = label;

@@ -3,17 +3,19 @@ define([
 	'ksf/dom/composite/_Composite',
 	'./Layer',
 	'ksf/dom/_Boundable',
+	'ksf/dom/_Positionable',
 	'ksf/dom/style/Style'
 ], function(
 	compose,
 	_Composite,
 	Layer,
 	_Boundable,
+	_Positionable,
 	Style
 ){
 	var maskStyle = new Style("#this { background: black; opacity: 0.5; }");
 
-	var Mask = compose(_Boundable, function() {
+	var Mask = compose(_Boundable, _Positionable, function() {
 		this.domNode = document.createElement('div');
 		maskStyle.apply(this.domNode);
 	});

@@ -3,11 +3,13 @@ define([
 	'../base/HtmlContainer',
 	'ksf/dom/_WithSize',
 	'ksf/dom/_Boundable',
+	'ksf/dom/_Positionable',
 ], function(
 	compose,
 	HtmlContainer,
 	_WithSize,
-	_Boundable
+	_Boundable,
+	_Positionable
 ){
 	return compose(_WithSize, _Boundable, function(content) {
 		this._container = new HtmlContainer();
@@ -22,38 +24,41 @@ define([
 				var child = childAndOptions[0] || childAndOptions,
 					options = childAndOptions[1] || {};
 
-				var childStyle = child.domNode.style,
+				var childPosition = {},
 					childWBound, childHBound;
 
-				childStyle.position = 'absolute';
-				childStyle.zIndex = index;
+				childPosition.position = 'absolute';
+				childPosition.zIndex = index;
 
 				switch (options.verticalAlign) {
 					case 'top':
-						childStyle.top = 0; break;
+						childPosition.top = 0; break;
 					case 'bottom':
-						childStyle.bottom = 0; break;
+						childPosition.bottom = 0; break;
 					case 'middle':
+						child.position(childPosition);	// set position=absolute before measuring size
 						var childHeight = child.size().height,
 							heightMargin = innerSize.height - childHeight;
-						childStyle.top = heightMargin / 2 + 'px'; break;
+						childPosition.top = heightMargin / 2 + 'px'; break;
 					default:	// fit
 						childHBound = innerSize.height;
 				}
 
 				switch (options.horizontalAlign) {
 					case 'right':
-						childStyle.right = 0; break;
+						childPosition.right = 0; break;
 					case 'left':
-						childStyle.left = 0; break;
+						childPosition.left = 0; break;
 					case 'middle':
+						child.position(childPosition);	// set position=absolute before measuring size
 						var childWidth = child.size().width,
 							widthMargin = innerSize.width - childWidth;
-						childStyle.left = widthMargin / 2 + 'px'; break;
+						childPosition.left = widthMargin / 2 + 'px'; break;
 					default:
 						childWBound = innerSize.width;
 				}
 				
+				child.position(childPosition);
 				child.bounds && child.bounds({
 					height: childHBound,
 					width: childWBound,
@@ -84,6 +89,12 @@ define([
 		bounds: function() {
 			_Boundable.bounds.apply(this, arguments);
 			this._layout();
+		},
+		position: function(position) {
+			if (position !== undefined) {
+				position.position = position.position || 'relative';
+			}
+			_Positionable.position.call(this, position);
 		}
 	});
 });
