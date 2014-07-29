@@ -1,27 +1,31 @@
 define([
 	'compose',
-	'dojo/domReady!',
+	'dojo/domReady',
 ], function(
-	compose
+	compose,
+	domReady
 ){
 	return compose(function(content, options) {
+		var self = this;
 		this._content = content;
 		options = options || {};
-
-		this._parentNode = options.parentNode || document.body;
-		this._parentNode.appendChild(this._content.domNode);
 
 		this._content.domNode.style.position = 'absolute';
 		this._content.domNode.style.top = 0;
 		this._content.domNode.style.left = 0;
 
-		this._size();
-		this._content.inDom && this._content.inDom(true);
+		domReady(function() {
+			self._parentNode = options.parentNode || document.body;
+			self._parentNode.appendChild(self._content.domNode);
 
-		if (options.autoWindowResize !== false) {
-			this._resize = this._size.bind(this);
-			window.addEventListener('resize', this._resize);
-		}
+			self._size();
+			self._content.inDom && self._content.inDom(true);
+
+			if (options.autoWindowResize !== false) {
+				self._resize = self._size.bind(self);
+				window.addEventListener('resize', self._resize);
+			}
+		});
 	}, {
 		_size: function() {
 			this._content.bounds({
