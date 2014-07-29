@@ -16,7 +16,7 @@ define([
 	_Stylable
 ){
 
-	return compose(_Destroyable, _Evented, _WithSize, _Boundable, _Stylable, _Positionable, function(toggle, dropDown) {
+	return compose(_Destroyable, _Evented, _WithSize, _Stylable, _Positionable, function(toggle, dropDown) {
 		var self = this;
 		this.domNode = document.createElement('div');
 		this._own(toggle, 'toggle');
@@ -50,7 +50,7 @@ define([
 
 		// auto close on blur
 		this.onBlur(this.close.bind(this));
-	}, {
+	}, _Boundable, {
 		open: function() {
 			this._owned.dropDown.domNode.style.display = 'block';
 			this._owned.dropDown.focus();
