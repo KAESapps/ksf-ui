@@ -2,12 +2,14 @@ define([
 	'compose',
 	'ksf/dom/_WithSize',
 	'ksf/dom/_Boundable',
+	'ksf/dom/_Positionable',
 ], function(
 	compose,
 	_WithSize,
-	_Boundable
+	_Boundable,
+	_Positionable
 ){
-	return compose(_WithSize, _Boundable, function(content) {
+	return compose(_WithSize, _Positionable, function(content) {
 		this.domNode = document.createElement('div');
 		this.content(content);
 	}, {
@@ -29,5 +31,5 @@ define([
 			this._childInDom(inDom);
 			this._inDom = inDom;
 		}
-	});
+	},_Boundable);
 });

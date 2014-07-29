@@ -15,10 +15,11 @@ define([
 ){
 	var maskStyle = new Style("#this { background: black; opacity: 0.5; }");
 
-	var Mask = compose(_Boundable, _Positionable, function() {
+	var Mask = compose(_Positionable, function() {
 		this.domNode = document.createElement('div');
 		maskStyle.apply(this.domNode);
-	});
+	},_Boundable);
+
 	return compose(_Composite, {
 		_rootFactory: function() {
 			return new Layer();

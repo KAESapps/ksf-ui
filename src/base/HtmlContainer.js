@@ -11,7 +11,7 @@ define([
 	_Boundable,
 	_Stylable
 ){
-	return compose(_WithSize, _Boundable, _Positionable, _Stylable, function(content) {
+	return compose(_WithSize, _Positionable, _Stylable, function(content) {
 		this.domNode = document.createElement(this._tag);
 		this._children = [];
 		content && this._appendContent(content);
@@ -67,5 +67,5 @@ define([
 			}, this);
 			this._inDom = inDom;
 		}
-	});
+	}, _Boundable);
 });
