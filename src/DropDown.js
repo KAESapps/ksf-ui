@@ -4,6 +4,7 @@ define([
 	'ksf/base/_Evented',
 	'ksf/dom/_WithSize',
 	'ksf/dom/_Boundable',
+	'ksf/dom/_Positionable',
 	'ksf/dom/style/_Stylable',
 ], function(
 	compose,
@@ -11,16 +12,22 @@ define([
 	_Evented,
 	_WithSize,
 	_Boundable,
+	_Positionable,
 	_Stylable
 ){
 
-	return compose(_Destroyable, _Evented, _WithSize, _Boundable, _Stylable, function(toggle, dropDown) {
+	return compose(_Destroyable, _Evented, _WithSize, _Boundable, _Stylable, _Positionable, function(toggle, dropDown) {
 		var self = this;
 		this.domNode = document.createElement('div');
 		this._own(toggle, 'toggle');
 		this._own(dropDown, 'dropDown');
 
-		dropDown.domNode.style.position = 'absolute';
+		toggle.position({
+			display: 'block'
+		});
+		dropDown.position({
+			position: 'absolute'
+		});
 
 		this.close();
 
