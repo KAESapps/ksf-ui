@@ -238,6 +238,7 @@ define([
 					items: style.bodyCells,
 				}
 			});
+			return this;
 		},
 	});
 
