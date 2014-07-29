@@ -11,13 +11,15 @@ define([
 	_Boundable,
 	_Positionable
 ){
-	return compose(_WithSize, _Boundable, function(content) {
+	return compose(_WithSize, function(content) {
 		this._container = new HtmlContainer();
 		this.domNode = this._container.domNode;
 		this.domNode.style.position = 'relative';
 		content && this.content(content);
 	}, {
 		_layout: function() {
+			var inDom = this._inDom;
+			if (!inDom) { return; }
 			var innerSize = this.size();
 
 			this._content && this._content.forEach(function(childAndOptions, index) {
@@ -57,7 +59,7 @@ define([
 					default:
 						childWBound = innerSize.width;
 				}
-				
+
 				child.position(childPosition);
 				child.bounds && child.bounds({
 					height: childHBound,
@@ -73,7 +75,6 @@ define([
 			}));
 			this._content = content;
 			this._applyInDom();
-			this._layout();
 		},
 		_applyInDom: function() {
 			var inDom = this._inDom;
@@ -81,14 +82,11 @@ define([
 				var child = childAndOptions[0] || childAndOptions;
 				child.inDom && child.inDom(inDom);
 			});
+			this._layout();
 		},
 		inDom: function(inDom) {
 			this._inDom = inDom;
 			this._applyInDom();
-		},
-		bounds: function() {
-			_Boundable.bounds.apply(this, arguments);
-			this._layout();
 		},
 		position: function(position) {
 			if (position !== undefined) {
@@ -96,5 +94,10 @@ define([
 			}
 			_Positionable.position.call(this, position);
 		}
+	}, _Boundable, {
+		bounds: function() {
+			_Boundable.prototype.bounds.apply(this, arguments);
+			this._layout();
+		},
 	});
 });
