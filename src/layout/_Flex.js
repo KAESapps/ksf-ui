@@ -3,13 +3,15 @@ define([
 	'ksf/dom/_Boundable',
 	'ksf/dom/_Positionable',
 	'ksf/dom/_WithSize',
+	'ksf/dom/style/_Stylable',
 ], function(
 	compose,
 	_Boundable,
 	_Positionable,
-	_WithSize
+	_WithSize,
+	_Stylable
 ){
-	return compose(_WithSize, _Positionable, function(content) {
+	return compose(_WithSize, _Positionable, _Stylable, function(content) {
 		this.domNode = document.createElement('div');
 		this._fixedChildren = [];
 		this._flexChildren = [];

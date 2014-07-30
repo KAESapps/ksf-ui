@@ -8,6 +8,8 @@ define([
 	return compose(_Flex, {
 		_childPosition: {
 			display: 'inline-block',
+			overflow: 'auto',
+			verticalAlign: 'top'
 		},
 		_layout: function() {
 			if (this._inDom) {
@@ -22,7 +24,8 @@ define([
 				var flexWidth = (innerSize.width - totalFixedWidth) / this._flexChildren.length;
 				this._flexChildren.forEach(function(child) {
 					child.bounds({
-						width: flexWidth
+						width: flexWidth,
+						height: innerSize.height
 					});
 				});
 			}
