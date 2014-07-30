@@ -7,9 +7,10 @@ define([
 	compose,
 	Button,
 	JSS,
-	style
+	styleProps
 ){
-	return compose(Button, {
-		_style: new JSS(style)
+	var style = new JSS(styleProps);
+	return compose(Button, function() {
+		this.style(style);
 	});
 });
