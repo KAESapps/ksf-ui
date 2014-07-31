@@ -33,22 +33,19 @@ define([
 				};
 			}));
 			this._own(sortedStore.onChange(function(changes) {
-				var newStoreValue = sortedStore.value();
 				changes.forEach(function(change) {
 					if (change.type === 'remove') {
-						root.remove(storeValue[change.index]);
-						storeValue.splice(change.index, 1);
+						root.remove(change.value);
 					}
 					if (change.type === 'add') {
-						root.add(sortedStore.item(change.value), change.value, storeValue[change.index]);
-						storeValue.splice(change.index, 0, change.value);
+						root.add(sortedStore.item(change.value), change.value, change.beforeKey);
 					}
 					if (change.type === 'move') {
-						root.move(storeValue[change.from], storeValue[change.to]);
+						root.move(change.key, change.beforeKey);
 					}
 				});
-				storeValue = newStoreValue;
 			}), 'contentObserver');
+			return this;
 		},
 		active: function(key) {
 			if (arguments.length) {
