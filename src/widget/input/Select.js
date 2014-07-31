@@ -10,34 +10,52 @@ define([
 	_Evented,
 	_WithSize,
 	_Stylable,
-	__Chainable,
+	_Chainable,
 	_Focusable
 ){
-	return compose(__Chainable, _Evented, _WithSize, _Stylable, _Focusable, function(args) {
+	return compose(_Chainable, _Evented, _WithSize, _Stylable, _Focusable, function(args) {
 		this.domNode = document.createElement('select');
 		if (args === undefined) {
 			args = {};
 		}
 		this.options(args.options || []);
+
+		// extra option when value is not in list
+		var notInListLabel = args.notInListLabel || "";
+		this._extraOption = document.createElement('option');
+		this._extraOption.textContent = notInListLabel;
 		
 		// valeur initiale
 		this._value = (args.value !== undefined) ? args.value : null;
 
 		var self = this;
 		this.domNode.addEventListener('change', function() {
-			self._value = self.domNode.value;
+			self._setValue(self.domNode.value);
 			self._emit('input', self._value);
 		});
 	}, {
 		_setValue: function(value) {
 			if (value === undefined) { return; }
+			this._value = value;
+			var extraOptionNeeded = false;
 			
-			if (this._optionValues.indexOf(value) === -1) {
+			if (value === null) {
 				this.domNode.selectedIndex = -1;
+			} else if (this._optionValues.indexOf(value) === -1) {
+				this._extraOption.value = value;
+				this.domNode.value = value;
+				extraOptionNeeded = true;
 			} else {
 				this.domNode.value = value;
 			}
-			this._value = value;
+
+			if (extraOptionNeeded) {
+				this.domNode.insertBefore(this._extraOption, this.domNode.firstChild);
+			} else {
+				if (this.domNode.firstChild === this._extraOption) {
+					this.domNode.removeChild(this._extraOption);
+				}
+			}
 		},
 		_getValue: function() {
 			return this._value;
@@ -46,7 +64,6 @@ define([
 			var domNode = this.domNode;
 			// clear options
 			var optionValues = this._optionValues = [];
-			delete this._extraOption;
 			while (domNode.lastChild) {
 				domNode.removeChild(domNode.lastChild);
 			}
