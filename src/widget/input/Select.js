@@ -2,6 +2,7 @@ define([
 	'compose',
 	'ksf/base/_Evented',
 	'ksf/dom/_WithSize',
+	'ksf/dom/_Positionable',
 	'ksf/dom/style/_Stylable',
 	'ksf/base/_Chainable',
 	'../base/_Focusable',
@@ -9,11 +10,12 @@ define([
 	compose,
 	_Evented,
 	_WithSize,
+	_Positionable,
 	_Stylable,
 	_Chainable,
 	_Focusable
 ){
-	return compose(_Chainable, _Evented, _WithSize, _Stylable, _Focusable, function(args) {
+	return compose(_Chainable, _Evented, _WithSize, _Stylable, _Focusable, _Positionable, function(args) {
 		this.domNode = document.createElement('select');
 		if (args === undefined) {
 			args = {};
