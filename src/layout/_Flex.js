@@ -1,23 +1,36 @@
 define([
 	'compose',
+	'ksf/base/_Destroyable',
 	'ksf/dom/_Boundable',
 	'ksf/dom/_Positionable',
 	'ksf/dom/_WithSize',
 	'ksf/dom/style/_Stylable',
 ], function(
 	compose,
+	_Destroyable,
 	_Boundable,
 	_Positionable,
 	_WithSize,
 	_Stylable
 ){
-	return compose(_WithSize, _Positionable, _Stylable, function(content) {
+	return compose(_Destroyable, _WithSize, _Positionable, _Stylable, function(content) {
 		this.domNode = document.createElement('div');
 		this._fixedChildren = [];
 		this._flexChildren = [];
 
 		content && this.content(content);
+		this._own([], 'childrenBoundsCancelers');
 	}, {
+		_setChildBounds: function(child, bounds) {
+			child.bounds && child.bounds(bounds);
+			this._owned.childrenBoundsCancelers.push(function() {
+				child.bounds(null);
+			});
+		},
+		_resetChildrenBounds: function() {
+			this._destroy('childrenBoundsCancelers');
+			this._own([], 'childrenBoundsCancelers');
+		},
 		content: function(content) {
 			var fixedChildren = this._fixedChildren = [],
 			flexChildren = this._flexChildren = [];

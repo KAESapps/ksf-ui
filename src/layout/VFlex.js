@@ -12,17 +12,20 @@ define([
 		},
 		_layout: function() {
 			if (this._inDom) {
-				var totalFixedHeight = 0,
+				this._resetChildrenBounds();
+				
+				var self = this,
+					totalFixedHeight = 0,
 					innerSize = this.size();
 				this._fixedChildren.forEach(function(child) {
 					totalFixedHeight += child.size().height;
-					child.bounds && child.bounds({
+					self._setChildBounds(child, {
 						width: innerSize.width
 					});
 				});
 				var flexHeight = (innerSize.height - totalFixedHeight) / this._flexChildren.length;
 				this._flexChildren.forEach(function(child) {
-					child.bounds({
+					self._setChildBounds(child, {
 						height: flexHeight
 					});
 				});
