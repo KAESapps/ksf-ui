@@ -19,11 +19,12 @@ define([
 	return compose(_Destroyable, _Evented, _WithSize, _Stylable, _Positionable, function(toggle, dropDown) {
 		var self = this;
 		this.domNode = document.createElement('div');
+		this.domNode.style.position = 'relative';
 		this._own(toggle, 'toggle');
 		this._own(dropDown, 'dropDown');
 
 		toggle.position({
-			display: 'block'
+			display: 'block',
 		});
 		dropDown.position({
 			position: 'absolute'
