@@ -13,12 +13,13 @@ define([
 	_WithSize,
 	_Stylable
 ){
-	return compose(_Destroyable, _WithSize, _Positionable, _Stylable, function(content) {
+	return compose(_Destroyable, _WithSize, _Positionable, _Stylable, function(options) {
+		this._options = options || {};
+
 		this.domNode = document.createElement('div');
 		this._fixedChildren = [];
 		this._flexChildren = [];
 
-		content && this.content(content);
 		this._own([], 'childrenBoundsCancelers');
 	}, {
 		_setChildBounds: function(child, bounds) {
@@ -42,23 +43,26 @@ define([
 				var child = childAndOptions[0] || childAndOptions,
 					options = childAndOptions[1] || {};
 				if (options.flex) {
-					flexChildren.push(child);
+					flexChildren.push([child, options]);
 				} else {
-					fixedChildren.push(child);
+					fixedChildren.push([child, options]);
 				}
-				child.position(self._childPosition);
+				self._setChildPosition(child, options);
 				this.domNode.appendChild(child.domNode);
 			}, this);
 
 			this._applyInDom();
+			return this;
 		},
 		_applyInDom: function() {
 			var inDom = this._inDom;
-			this._fixedChildren.forEach(function(child) {
+			this._fixedChildren.forEach(function(childAndOptions) {
+				var child = childAndOptions[0];
 				child.inDom && child.inDom(inDom);
 			});
 			this._layout();
-			this._flexChildren.forEach(function(child) {
+			this._flexChildren.forEach(function(childAndOptions) {
+				var child = childAndOptions[0];
 				child.inDom && child.inDom(inDom);
 			});
 		},
