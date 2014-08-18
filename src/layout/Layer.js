@@ -4,14 +4,16 @@ define([
 	'ksf/dom/_WithSize',
 	'ksf/dom/_Boundable',
 	'ksf/dom/_Positionable',
+	'ksf/dom/style/_Stylable'
 ], function(
 	compose,
 	HtmlContainer,
 	_WithSize,
 	_Boundable,
-	_Positionable
+	_Positionable,
+	_Stylable
 ){
-	return compose(_WithSize, function(content) {
+	return compose(_WithSize, _Stylable, function(content) {
 		this._container = new HtmlContainer();
 		this.domNode = this._container.domNode;
 		this.domNode.style.position = 'relative';
@@ -75,6 +77,7 @@ define([
 			}));
 			this._content = content;
 			this._applyInDom();
+			return this;
 		},
 		_applyInDom: function() {
 			var inDom = this._inDom;

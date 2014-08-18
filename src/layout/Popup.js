@@ -1,6 +1,7 @@
 define([
 	'compose',
 	'ksf/dom/composite/_Composite',
+	'ksf/dom/composite/_RootStylable',
 	'./Layer',
 	'ksf/dom/_Boundable',
 	'ksf/dom/_Positionable',
@@ -8,6 +9,7 @@ define([
 ], function(
 	compose,
 	_Composite,
+	_RootStylable,
 	Layer,
 	_Boundable,
 	_Positionable,
@@ -20,7 +22,7 @@ define([
 		maskStyle.apply(this.domNode);
 	},_Boundable);
 
-	return compose(_Composite, {
+	return compose(_Composite, _RootStylable, {
 		_rootFactory: function() {
 			return new Layer();
 		}

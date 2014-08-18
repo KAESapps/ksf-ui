@@ -7,6 +7,7 @@ define([], function(){
 			this._own(observable.onChange(function(value) {
 				root.value(value);
 			}), 'observingChanges');
+			return this;
 		},
 	};
 });

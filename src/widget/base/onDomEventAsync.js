@@ -1,10 +1,11 @@
 define([], function() {
 	return function(eventName) {
 		return function(listener) {
+			var self = this;
 			var domNode = this.domNode,
 				cb = function(ev) {
 					setTimeout(function() {
-						listener(ev);
+						listener.call(self, ev);
 					});
 				};
 			domNode.addEventListener(eventName, cb);
