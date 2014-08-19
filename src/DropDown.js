@@ -27,7 +27,8 @@ define([
 			display: 'block',
 		});
 		dropDown.position({
-			position: 'absolute'
+			position: 'absolute',
+			zIndex: 1
 		});
 
 		this.close();
