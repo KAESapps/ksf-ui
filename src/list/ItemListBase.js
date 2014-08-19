@@ -52,8 +52,8 @@ define([
 			}
 			var beforeCmp = (beforeKey !== undefined) ? this._components[beforeKey] : undefined;
 			var cmp = this._createComponent(value);
-			this._root.add(cmp, beforeCmp);
 			this._style && this._style.items && cmp.style(this._style.items);
+			this._root.add(cmp, beforeCmp);
 
 			this._components[key] = cmp;
 
