@@ -3,12 +3,16 @@ define([
 	'ksf/base/_Evented',
 	'ksf/dom/_WithSize',
 	'ksf/dom/style/_Stylable',
+	'ksf/dom/_Boundable',
+	'ksf/dom/_Positionable',
 	'../../base/_Focusable'
 ], function(
 	compose,
 	_Evented,
 	_WithSize,
 	_Stylable,
+	_Boundable,
+	_Positionable,
 	_Focusable
 ){
 	return compose(_Evented, _WithSize, _Stylable, _Focusable, function(value) {
@@ -25,7 +29,7 @@ define([
 			}
 		});
 		if (value !== undefined ) { this.value(value); }
-	}, {
+	}, _Boundable, _Positionable, {
 		value: function(value) {
 			if (arguments.length > 0) {
 				this._value = value;
