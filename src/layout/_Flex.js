@@ -21,9 +21,9 @@ define([
 		this._flexChildren = [];
 
 		this._own([], 'childrenBoundsCancelers');
-	}, {
+	}, _Boundable, {
 		_setChildBounds: function(child, bounds) {
-			child.bounds && child.bounds(bounds);
+			child.bounds(bounds);
 			this._owned.childrenBoundsCancelers.push(function() {
 				child.bounds(null);
 			});

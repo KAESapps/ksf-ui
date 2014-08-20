@@ -6,10 +6,9 @@ define([
 	_Flex
 ){
 	return compose(_Flex, {
-		_setChildPosition: function(child) {
+		_setChildPosition: function(child, childOptions) {
 			child.position({
-				display: 'block',
-				overflow: 'auto'
+				display: 'block'
 			});
 		},
 		_layout: function() {

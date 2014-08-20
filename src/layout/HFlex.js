@@ -8,8 +8,7 @@ define([
 	return compose(_Flex, {
 		_setChildPosition: function(child, childOptions) {
 			var posArgs = {
-				display: 'inline-block',
-				overflow: 'auto'
+				display: 'inline-block'
 			};
 			var vertAlign = childOptions.verticalAlign || this._options.verticalAlign || 'fit';
 			childOptions.verticalAlign = vertAlign;
