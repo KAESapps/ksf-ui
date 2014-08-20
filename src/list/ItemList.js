@@ -57,5 +57,8 @@ define([
 		onActiveRequest: function(cb) {
 			return this._root.onActiveRequest(cb);
 		},
+		getComponent: function(id) {
+			return this._root.getComponent(id);
+		}
 	});
 });

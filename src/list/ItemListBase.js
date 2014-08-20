@@ -117,5 +117,8 @@ define([
 				}
 			}
 		},
+		getComponent: function(id) {
+			return this._components[id];
+		}
 	});
 });
