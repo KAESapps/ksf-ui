@@ -3,13 +3,15 @@ define([
 	'ksf/dom/_WithSize',
 	'ksf/dom/_Boundable',
 	'ksf/dom/_Positionable',
+	'ksf/dom/style/_Stylable',
 ], function(
 	compose,
 	_WithSize,
 	_Boundable,
-	_Positionable
+	_Positionable,
+	_Stylable
 ){
-	return compose(_WithSize, _Positionable, function(content) {
+	return compose(_WithSize, _Positionable, _Stylable, function(content) {
 		this.domNode = document.createElement('div');
 		this.content(content);
 	}, {
@@ -31,5 +33,10 @@ define([
 			this._childInDom(inDom);
 			this._inDom = inDom;
 		}
-	},_Boundable);
+	},_Boundable, {
+		bounds: function(bounds) {
+			_Boundable.prototype.bounds.apply(this, arguments);
+			this._child && this._child.bounds(bounds);
+		}
+	});
 });
