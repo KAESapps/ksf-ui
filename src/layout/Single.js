@@ -24,6 +24,7 @@ define([
 			if (content && content.domNode) {
 				this.domNode.appendChild(content.domNode);
 				this._childInDom(this._inDom);
+				this._layout();
 			}
 		},
 		_childInDom: function(inDom) {
@@ -34,9 +35,13 @@ define([
 			this._inDom = inDom;
 		}
 	},_Boundable, {
+		_layout: function() {
+			this._child && this._child.bounds(this._bounds);
+		},
 		bounds: function(bounds) {
 			_Boundable.prototype.bounds.apply(this, arguments);
-			this._child && this._child.bounds(bounds);
+			this._bounds = bounds;
+			this._layout();
 		}
 	});
 });
