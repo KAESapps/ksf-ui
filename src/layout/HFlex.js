@@ -22,36 +22,34 @@ define([
 			child.position(posArgs);
 		},
 		_layout: function() {
-			if (this._inDom) {
-				this._resetChildrenBounds();
-				
-				var self = this,
-					totalFixedWidth = 0,
-					innerSize = this.size();
+			this._resetChildrenBounds();
+			
+			var self = this,
+				totalFixedWidth = 0,
+				innerSize = this._innerSize();
 
-				this._fixedChildren.forEach(function(childAndOptions) {
-					var child = childAndOptions[0],
-						options = childAndOptions[1];
-					totalFixedWidth += child.size().width;
-					if (options.verticalAlign === 'fit') {
-						self._setChildBounds(child, {
-							height: innerSize.height
-						});
-					}
-				});
-				var flexWidth = (innerSize.width - totalFixedWidth) / this._flexChildren.length;
-				this._flexChildren.forEach(function(childAndOptions) {
-					var child = childAndOptions[0],
-						options = childAndOptions[1],
-						childBounds = {
-							width: flexWidth
-						};
-					if (options.verticalAlign === 'fit') {
-						childBounds.height = innerSize.height;
-					}
-					self._setChildBounds(child, childBounds);
-				});
-			}
+			this._fixedChildren.forEach(function(childAndOptions) {
+				var child = childAndOptions[0],
+					options = childAndOptions[1];
+				totalFixedWidth += child.size().width;
+				if (options.verticalAlign === 'fit') {
+					self._setChildBounds(child, {
+						height: innerSize.height
+					});
+				}
+			});
+			var flexWidth = (innerSize.width - totalFixedWidth) / this._flexChildren.length;
+			this._flexChildren.forEach(function(childAndOptions) {
+				var child = childAndOptions[0],
+					options = childAndOptions[1],
+					childBounds = {
+						width: flexWidth
+					};
+				if (options.verticalAlign === 'fit') {
+					childBounds.height = innerSize.height;
+				}
+				self._setChildBounds(child, childBounds);
+			});
 		},
 	});
 });

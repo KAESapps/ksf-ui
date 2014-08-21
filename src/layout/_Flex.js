@@ -1,27 +1,36 @@
 define([
 	'compose',
+	'ksf/dom/composite/_Composite',
 	'ksf/base/_Destroyable',
 	'ksf/dom/_Boundable',
 	'ksf/dom/_Positionable',
 	'ksf/dom/_WithSize',
-	'ksf/dom/style/_Stylable',
+	'ksf/dom/_WithInnerSize',
+	'ksf/dom/composite/_RootStylable',
+	'../base/HtmlContainer'
 ], function(
 	compose,
+	_Composite,
 	_Destroyable,
 	_Boundable,
 	_Positionable,
 	_WithSize,
-	_Stylable
+	_WithInnerSize,
+	_RootStylable,
+	HtmlContainer
 ){
-	return compose(_Destroyable, _WithSize, _Positionable, _Stylable, function(options) {
+	return compose(_Composite, {
+		_rootFactory: function() {
+			return new HtmlContainer();
+		}
+	}, _WithInnerSize, _RootStylable, function(options) {
 		this._options = options || {};
 
-		this.domNode = document.createElement('div');
 		this._fixedChildren = [];
 		this._flexChildren = [];
 
 		this._own([], 'childrenBoundsCancelers');
-	}, _Boundable, {
+	}, {
 		_setChildBounds: function(child, bounds) {
 			child.bounds(bounds);
 			this._owned.childrenBoundsCancelers.push(function() {
@@ -37,8 +46,7 @@ define([
 			flexChildren = this._flexChildren = [];
 			var self = this;
 
-			// TODO: use HTMLContainer for appending children
-			this.domNode.innerHTML = "";
+			var children = [];
 			content.forEach(function(childAndOptions) {
 				var child = childAndOptions[0] || childAndOptions,
 					options = childAndOptions[1] || {};
@@ -48,52 +56,30 @@ define([
 					fixedChildren.push([child, options]);
 				}
 				self._setChildPosition(child, options);
-				this.domNode.appendChild(child.domNode);
-			}, this);
+				children.push(child);
+			});
+			this._root.content(children);
+			this._layoutIfInDom();
 
-			this._applyInDom();
 			return this;
 		},
-		_applyInDom: function() {
-			var inDom = this._inDom;
-			this._fixedChildren.forEach(function(childAndOptions) {
-				var child = childAndOptions[0];
-				child.inDom && child.inDom(inDom);
-			});
-			this._layout();
-			this._flexChildren.forEach(function(childAndOptions) {
-				var child = childAndOptions[0];
-				child.inDom && child.inDom(inDom);
-			});
-		},
 		inDom: function(inDom) {
-			this._inDom = inDom;
-			this._applyInDom();
+			var ret = _Composite.prototype.inDom.apply(this, arguments);
+			if (inDom) {
+				this._layout();
+			}
+			return ret;
 		},
 
-		_layout: function() {
-			if (this._inDom) {
-				var totalFixedHeight = 0,
-					innerSize = this.size();
-				this._fixedChildren.forEach(function(child) {
-					totalFixedHeight += child.size().height;
-					child.bounds && child.bounds({
-						width: innerSize.width
-					});
-				});
-				var flexHeight = (innerSize.height - totalFixedHeight) / this._flexChildren.length;
-				this._flexChildren.forEach(function(child) {
-					child.bounds({
-						height: flexHeight
-					});
-				});
+		_layoutIfInDom: function() {
+			if (this.inDom()) {
+				this._layout();
 			}
 		},
 
 		bounds: function() {
-			_Boundable.prototype.bounds.apply(this, arguments);
-
-			this._layout();
+			_Composite.prototype.bounds.apply(this, arguments);
+			this._layoutIfInDom();
 		}
 	});
 });

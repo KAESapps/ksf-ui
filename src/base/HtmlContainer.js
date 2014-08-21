@@ -62,10 +62,14 @@ define([
 			child.inDom && child.inDom(this._inDom);
 		},
 		inDom: function(inDom) {
-			this._children.forEach(function(child) {
-				child.inDom && child.inDom(inDom);
-			}, this);
-			this._inDom = inDom;
+			if (inDom !== undefined) {
+				this._children.forEach(function(child) {
+					child.inDom && child.inDom(inDom);
+				}, this);
+				this._inDom = inDom;
+			} else {
+				return this._inDom;
+			}
 		}
 	}, _Boundable);
 });
