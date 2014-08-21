@@ -1,41 +1,29 @@
 define([
 	'compose',
-	'ksf/base/_Evented',
-	'ksf/base/_Chainable',
-	'ksf/dom/_WithSize',
-	'ksf/dom/style/_Stylable',
-	'../base/_Focusable',
+	'./_Base'
 ], function(
 	compose,
-	_Evented,
-	_Chainable,
-	_WithSize,
-	_Stylable,
-	_Focusable
+	_Base
 ){
-	return compose(_Evented, _Chainable, _Focusable, _WithSize, _Stylable, function(options) {
+	return compose(function(options) {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'text';
 		if (options && options.placeholder) { this.domNode.placeholder = options.placeholder; }
-		if (options && options.value !== undefined) { this.value(options.value); }
 		var self = this;
+		var changing = false;
 		this.domNode.addEventListener('input', function() {
-			self._emit('input', self.domNode.value);
-		});
-	}, {
-		value: function(value) {
-			// value est settable programmatiquement pour initialiser la valeur mais ne déclenche pas un événement 'input'
-			if (arguments.length > 0) {
-				this._setNodeValue(value);
-			} else {
-				return this.domNode.value;
+			if (!changing) {
+				changing = true;
+				self._emit('input', self._getValue());
+				changing = false;
 			}
+		});
+	}, _Base, {
+		_getValue: function() {
+			return this.domNode.value;
 		},
-		_setNodeValue: function(value) {
+		_setValue: function(value) {
 			this.domNode.value = value === undefined ? null : value;
-		},
-		onInput: function(cb) {
-			return this._on('input', cb);
 		}
 	});
 });
