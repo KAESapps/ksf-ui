@@ -114,6 +114,9 @@ define([
 				row.add(column.body, key);
 			});
 		},
+		getRow: function(key) {
+			return this.get(key);
+		},
 		addColumn: function(col, key, beforeKey) {
 			this._columns[key] = col;
 			if (beforeKey) {
@@ -142,25 +145,7 @@ define([
 				row.move(key, beforeKey);
 			}
 		},
-		// deprecated
-/*		value: function(value) {
-			// met à jour la valeur de chaque ligne, en crée si besoin
-			var rows = this._components;
-			value.forEach(function(v, i) {
-				var row = rows[i];
-				if (! row) {
-					row = this.addRow(v, i);
-				} else {
-					rows[i].value(v);
-				}
-			}, this);
-			// et supprime les lignes en trop
-			var valueLength = value.length;
-			while (rows.length > valueLength) {
-				this.removeRow(valueLength);
-			}
-		},
-*/	});
+	});
 
 	var HeadRow = compose(ItemListBase, {
 		_rootFactory: function() {
@@ -202,6 +187,9 @@ define([
 		},
 		moveRow: function(key, beforeKey) {
 			this._body.move(key, beforeKey);
+		},
+		getRow: function(key) {
+			return this._body.getRow(key);
 		},
 		addColumn: function(col, key, beforeKey) {
 			this._body.addColumn(col, key, beforeKey);

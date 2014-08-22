@@ -72,6 +72,9 @@ define([
 
 			this._root.move(cmp, beforeCmp);
 		},
+		get: function(key) {
+			return this._components[key];
+		},
 		clear: function() {
 			this._root.clear();
 			this._destroyAllComponents();
