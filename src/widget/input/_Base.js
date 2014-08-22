@@ -19,7 +19,7 @@ define([
 ){
 	return compose(_Boundable, _Evented, _Chainable, _WithSize, _Stylable, _Positionable, _Focusable, {
 		value: function(value) {
-			if (arguments.length > 0) {
+			if (value !== undefined) {
 				// value est settable programmatiquement pour initialiser la valeur mais ne déclenche pas un événement 'input'
 				this._setValue(value);
 				return this;
