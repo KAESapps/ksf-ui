@@ -55,11 +55,13 @@ define([
 	}, _Boundable, {
 		open: function() {
 			this._owned.dropDown.domNode.style.display = 'block';
+			this._owned.dropDown.inDom && this._owned.dropDown.inDom(true);
 			this._owned.dropDown.focus();
 			this._opened = true;
 		},
 		close: function() {
 			this._owned.dropDown.domNode.style.display = 'none';
+			this._owned.dropDown.inDom && this._owned.dropDown.inDom(false);
 			this._opened = false;
 		},
 		toggle: function() {
@@ -78,7 +80,7 @@ define([
 		},
 		inDom: function(inDom) {
 			this._owned.toggle.inDom && this._owned.toggle.inDom(inDom);
-			this._owned.dropDown.inDom && this._owned.dropDown.inDom(inDom);
+			this._owned.dropDown.inDom && this._owned.dropDown.inDom(this._opened && inDom);
 			this._inDom = inDom;
 		},
 		/* la gestion du focus est bien compliquée
