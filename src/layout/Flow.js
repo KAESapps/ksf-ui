@@ -28,6 +28,10 @@ define([
 		add: function(child, beforeChild, options) {
 			HtmlContainer.prototype.add.call(this, child, beforeChild);
 			child.position && child.position(options);
+		},
+		scrollable: function(scrollable) {
+			this.domNode.style.overflow = scrollable ? 'auto' : null;
+			return this;
 		}
 	});
 });
