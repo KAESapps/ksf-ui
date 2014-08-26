@@ -15,7 +15,7 @@ define([
 	_Chainable,
 	_Focusable
 ){
-	return compose(_Chainable, _Evented, _WithSize, _Stylable, _Focusable, _Positionable, function(args) {
+	return compose(_Chainable, _Evented, _WithSize, _Stylable, _Positionable, function(args) {
 		this.domNode = document.createElement('select');
 		if (args === undefined) {
 			args = {};
@@ -26,7 +26,7 @@ define([
 		var notInListLabel = args.notInListLabel || "";
 		this._extraOption = document.createElement('option');
 		this._extraOption.textContent = notInListLabel;
-		
+
 		// valeur initiale
 		this._value = (args.value !== undefined) ? args.value : null;
 
@@ -35,12 +35,12 @@ define([
 			self._setValue(self.domNode.value);
 			self._emit('input', self._value);
 		});
-	}, {
+	}, _Focusable, {
 		_setValue: function(value) {
 			if (value === undefined) { return; }
 			this._value = value;
 			var extraOptionNeeded = false;
-			
+
 			if (value === null) {
 				this.domNode.selectedIndex = -1;
 			} else if (this._optionValues.indexOf(value) === -1) {

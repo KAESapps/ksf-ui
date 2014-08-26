@@ -1,5 +1,8 @@
 define(['./onDomEventAsync'], function(onDomEventAsync){
-	return {
+	var Focusable = function() {
+		this.domNode.tabIndex = 0;
+	};
+	Focusable.prototype = {
 		focus: function() {
 			this.domNode.focus();
 		},
@@ -12,4 +15,5 @@ define(['./onDomEventAsync'], function(onDomEventAsync){
 			return document.activeElement === this.domNode;
 		},
 	};
+	return Focusable;
 });
