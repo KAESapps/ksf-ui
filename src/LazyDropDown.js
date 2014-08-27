@@ -12,7 +12,7 @@ define([
 
 	return compose(_Composite, _RootStylable, function() {
 		// auto close on blur
-		// this.onBlur(this.close.bind(this));
+		this.onBlur(this.close.bind(this));
 	}, {
 		_rootFactory: function() {
 			return new FlowContainer().position({position: 'relative'});
@@ -57,12 +57,15 @@ define([
 				}
 			});
 			this._root.add(popup);
-			popup.focus();
+			popup.focus && popup.focus();
 			this._opened = true;
 		},
 		close: function() {
-			this._root.remove(this._popup);
-			this._popup.destroy && this._popup.destroy();
+			if (this._popup) {
+				this._root.remove(this._popup);
+				this._popup.destroy && this._popup.destroy();
+				delete this._popup;
+			}
 			this._opened = false;
 		},
 		toggle: function() {
