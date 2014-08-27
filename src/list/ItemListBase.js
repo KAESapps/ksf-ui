@@ -80,7 +80,6 @@ define([
 			this._destroyAllComponents();
 			this._components = {};
 			this.active(null);
-
 		},
 		_activeKey: null,
 		active: function(key) {
@@ -120,8 +119,5 @@ define([
 				}
 			}
 		},
-		getComponent: function(id) {
-			return this._components[id];
-		}
 	});
 });
