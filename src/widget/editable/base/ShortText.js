@@ -15,7 +15,7 @@ define([
 	_Positionable,
 	_Focusable
 ){
-	return compose(_Evented, _WithSize, _Stylable, _Focusable, function(value) {
+	return compose(_Evented, _WithSize, _Stylable, function(value) {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'text';
 		var self = this;
@@ -29,7 +29,7 @@ define([
 			}
 		});
 		if (value !== undefined ) { this.value(value); }
-	}, _Boundable, _Positionable, {
+	}, _Boundable, _Positionable, _Focusable, {
 		value: function(value) {
 			if (arguments.length > 0) {
 				this._value = value;

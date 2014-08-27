@@ -18,8 +18,9 @@ define([
 		label !== undefined && this.value(label);
 	}, _WithSize, _Boundable, _Positionable, _Stylable, _Chainable, {
 		value: function(label) {
-			if (arguments.length) {
+			if (label !== undefined) {
 				this.domNode.textContent = (label === undefined ? null : label);
+				return this;
 			} else {
 				return this.domNode.textContent;
 			}
