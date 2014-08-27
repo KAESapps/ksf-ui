@@ -32,6 +32,10 @@ define([
 		scrollable: function(scrollable) {
 			this.domNode.style.overflow = scrollable ? 'auto' : null;
 			return this;
+		},
+		wrap: function(wrap) {
+			this.domNode.style.whiteSpace = wrap ? 'null' : 'nowrap';
+			return this;
 		}
 	});
 });
