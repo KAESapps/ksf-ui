@@ -1,7 +1,7 @@
 define([
 	'compose',
 	'./Label',
-	'./_Clickable'
+	'ksf/dom/_Clickable'
 ], function(
 	compose,
 	Label,

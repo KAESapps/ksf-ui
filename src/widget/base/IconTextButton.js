@@ -1,9 +1,9 @@
 define([
 	'compose',
 	'ksf/dom/composite/_Composite',
-	'ksf-ui/widget/base/_Clickable',
-	'ksf-ui/layout/Flow',
-	'ksf-ui/widget/base/Label',
+	'ksf/dom/_Clickable',
+	'../../layout/Flow',
+	'./Label',
 	'ksf/base/_Chainable'
 ], function(
 	compose,

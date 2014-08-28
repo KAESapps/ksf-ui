@@ -6,7 +6,7 @@ define([
 	'ksf/dom/_Positionable',
 	'ksf/dom/_Boundable',
 	'ksf/dom/style/_Stylable',
-	'../base/_Focusable'
+	'ksf/dom/_Focusable'
 ], function(
 	compose,
 	_Evented,

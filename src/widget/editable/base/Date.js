@@ -2,7 +2,7 @@ define([
 	'compose',
 	'ksf/base/_Evented',
 	'ksf/dom/style/_Stylable',
-	'../../base/_Focusable'
+	'ksf/dom/_Focusable'
 ], function(
 	compose,
 	_Evented,

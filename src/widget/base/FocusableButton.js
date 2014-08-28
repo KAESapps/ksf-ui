@@ -4,8 +4,8 @@ define([
 	'ksf/dom/_Positionable',
 	'ksf/dom/style/_Stylable',
 	'ksf/base/_Chainable',
-	'./_Clickable',
-	'./_Focusable'
+	'ksf/dom/_Clickable',
+	'ksf/dom/_Focusable'
 ], function(
 	compose,
 	_WithSize,
