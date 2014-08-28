@@ -1,95 +1,100 @@
 define([
 	'compose',
-	'ksf/base/_Destroyable',
-	'ksf/base/_Evented',
-	'ksf/dom/_WithSize',
+	'ksf/dom/composite/_Composite',
+	'ksf/dom/composite/_RootStylable',
+	'ksf/dom/composite/_Focusable',
 	'ksf/dom/_Boundable',
-	'ksf/dom/_Positionable',
-	'ksf/dom/style/_Stylable',
+	'ksf/dom/_Focusable',
+	'./layout/DropDown',
 ], function(
 	compose,
-	_Destroyable,
-	_Evented,
-	_WithSize,
+	_Composite,
+	_RootStylable,
+	_Focusable,
 	_Boundable,
-	_Positionable,
-	_Stylable
+	_DomFocusable,
+	DropDownContainer
 ){
+	var FocusableDropDownContainer = compose(DropDownContainer, _DomFocusable);
 
-	return compose(_Destroyable, _Evented, _WithSize, _Stylable, _Positionable, function(toggle, dropDown) {
-		var self = this;
-		this.domNode = document.createElement('div');
-		this.domNode.style.position = 'relative';
-		this._own(toggle, 'toggle');
-		this._own(dropDown, 'dropDown');
-
-		toggle.position({
-			display: 'block',
-		});
-		dropDown.position({
-			position: 'absolute',
-			zIndex: 1
-		});
-
-		this.close();
-
-		this.domNode.appendChild(toggle.domNode);
-		this.domNode.appendChild(dropDown.domNode);
-
-		toggle.onAction(this.toggle.bind(this));
-
-		// blur event
-		toggle.onBlur(function() {
-			if (!dropDown.focused()) {
-				self._emit('blur');
-			}
-		});
-		dropDown.onBlur(function() {
-			if (!toggle.focused()) {
-				self._emit('blur');
-			}
-		});
-
+	// @param focusable 	if true, the dropDown component will be itself focusable and its content must not be focusable (have a tabIndex). If falsy, the dropDown content (main and popup) must be focusable and the dropDown component will delegate them the focus management
+	return compose(_Composite, _Focusable, function(params) {
+		this._params = params = params || {};
+		if (params.focusable) {
+			this._setRoot(new FocusableDropDownContainer());
+			this._addFocusable(this._root);
+		} else {
+			this._setRoot(new DropDownContainer());
+		}
 		// auto close on blur
-		this.onBlur(this.close.bind(this));
+		this.onBlur(this.open.bind(this, false));
 	}, _Boundable, {
-		open: function() {
-			this._owned.dropDown.domNode.style.display = 'block';
-			this._owned.dropDown.inDom && this._owned.dropDown.inDom(true);
-			this._owned.dropDown.focus();
-			this._opened = true;
+		main: function(cmp) {
+			// unbind previous main if any
+			if (this._main) {
+				this._root.remove(this._main);
+				this._mainActionListener();
+				if (!this._params.focusable) {
+					this._removeFocusable(this._main);
+				}
+			}
+			// register new main
+			this._main = cmp;
+			// bind new mains
+			this._root.main(cmp);
+			if (!this._params.focusable) {
+				this._addFocusable(cmp);
+			}
+			this._mainActionListener = cmp.onAction(this.toggle.bind(this));
+			return this;
 		},
-		close: function() {
-			this._owned.dropDown.domNode.style.display = 'none';
-			this._owned.dropDown.inDom && this._owned.dropDown.inDom(false);
-			this._opened = false;
+		popup: function(cmp) {
+			// unbind previous popup if any
+			if (this._popup) {
+				this._root.popup(null);
+				if (!this._params.focusable) {
+					this._removeFocusable(this._popup);
+				}
+			}
+			if (cmp !== null) {
+				// register new popup
+				this._popup = cmp;
+				// bind new popup
+				this._root.popup(cmp);
+				if (!this._params.focusable) {
+					this._addFocusable(cmp);
+				}
+			}
+			return this;
+		},
+		open: function(open, options) {
+			if (arguments.length) {
+				if (open !== this.open()) { // don't open if already open and same for close
+					if (open) {
+						this._open(options);
+					} else {
+						this._close();
+					}
+				}
+			} else {
+				return this._root.open();
+			}
+		},
+		_open: function(options) {
+			this._root.open(true, options);
+		},
+		_close: function() {
+			this._root.open(false);
 		},
 		toggle: function() {
-			if (this._opened) {
-				this.close();
-			} else {
-				this.open();
-			}
+			this.open(!this.open());
 		},
 		focus: function() {
-			if (this._opened) {
-				this._owned.dropDown.focus();
+			if (this._params.focusable) {
+				this._root.focus();
 			} else {
-				this._owned.toggle.focus();
+				this._main.focus();
 			}
 		},
-		inDom: function(inDom) {
-			this._owned.toggle.inDom && this._owned.toggle.inDom(inDom);
-			this._owned.dropDown.inDom && this._owned.dropDown.inDom(this._opened && inDom);
-			this._inDom = inDom;
-		},
-		/* la gestion du focus est bien compliquée
-		Firefox n'implémente pas focusin et focusout, donc on utilise l'événement 'blur' en mode 'capturing'
-		Firefox n'alimente pas la propriété 'relatedTarget' de l'événement donc on utilise un setTimeout pour savoir quel est l'élément effectivement activé via document.activeElement
-		*/
-		onBlur: function(cb) {
-			return this._on('blur', cb);
-		},
-		onFocus: function() {},
 	});
 });
