@@ -17,31 +17,9 @@ define([
 		}
 	}, function(options) {
 		this.domNode.style.position = 'relative';
-		
+
 		this._defaultOptions = options || {};
 	}, {
-		_layout: function(options) {
-			options = options || this._options;
-			
-			var children = [];
-			if (this._popup) {
-				children.push([this._popup, {
-					display: 'block',
-					position: 'absolute',
-					left: options.left ? 0 : null,
-					right: options.right ? 0 : null,
-					bottom: options.top ? '100%' : null
-				}]);
-			}
-			if (this._content) {
-				if (options.top) {
-					children.push([this._content]);
-				} else {
-					children.unshift(this._content);
-				}
-			}
-			this._root.content(children);
-		},
 		main: function(main) {
 			if (this._main) {
 				this._root.remove(this._main);
@@ -76,7 +54,8 @@ define([
 					position: 'absolute',
 					left: options.left ? 0 : null,
 					right: options.right ? 0 : null,
-					bottom: options.top ? '100%' : null
+					bottom: options.top ? '100%' : null,
+					zIndex: 1,
 				});
 			}
 		},
