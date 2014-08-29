@@ -7,7 +7,8 @@ define([
 	'ksf/dom/_WithSize',
 	'ksf/dom/_WithInnerSize',
 	'ksf/dom/composite/_RootStylable',
-	'../base/HtmlContainer'
+	'../base/HtmlContainer',
+	'lodash/objects/assign'
 ], function(
 	compose,
 	_Composite,
@@ -17,14 +18,15 @@ define([
 	_WithSize,
 	_WithInnerSize,
 	_RootStylable,
-	HtmlContainer
+	HtmlContainer,
+	mixin
 ){
 	return compose(_Composite, {
 		_rootFactory: function() {
 			return new HtmlContainer();
 		}
 	}, _WithInnerSize, _RootStylable, function(options) {
-		this._options = options || {};
+		this._posOptions = mixin({}, options, { display: 'block' });
 
 		this._own([], 'childrenBoundsCancelers');
 	}, {
@@ -80,9 +82,7 @@ define([
 			this._layoutIfInDom();
 		},
 		_setChildPosition: function(child) {
-			child.position({
-				display: 'block'
-			});
+			child.position(this._posOptions);
 		},
 		_layout: function() {
 			this._resetChildrenBounds();
