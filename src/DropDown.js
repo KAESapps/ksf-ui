@@ -82,6 +82,7 @@ define([
 		},
 		_open: function(options) {
 			this._root.open(true, options);
+			this._popup.focus && this._popup.focus();
 		},
 		_close: function() {
 			this._root.open(false);

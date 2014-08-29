@@ -12,11 +12,11 @@ define([
 			this._popupFactoryScope = scope;
 			return this;
 		},
-		_open: function(options) {
+		_open: function() {
 			// create popup component
 			var popup = this._popupFactory.call(this._popupFactoryScope || null);
 			this.popup(popup);
-			this._root.open(true, options);
+			DropDown.prototype._open.apply(this, arguments);
 		},
 		_close: function() {
 			this._root.open(false);
