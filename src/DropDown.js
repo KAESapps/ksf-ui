@@ -21,10 +21,10 @@ define([
 	return compose(_Composite, _Focusable, function(params) {
 		this._params = params = params || {};
 		if (params.focusable) {
-			this._setRoot(new FocusableDropDownContainer());
+			this._setRoot(new FocusableDropDownContainer(params));
 			this._addFocusable(this._root);
 		} else {
-			this._setRoot(new DropDownContainer());
+			this._setRoot(new DropDownContainer(params));
 		}
 		// auto close on blur
 		this.onBlur(this.open.bind(this, false));
