@@ -1,31 +1,25 @@
 define([
 	'compose',
-	'ksf/base/_Evented',
-	'ksf/dom/_WithSize'
+	'./_DomInput'
 ], function(
 	compose,
-	_Evented,
-	_WithSize
+	_DomInput
 ){
-	return compose(_Evented, _WithSize, function(value) {
-		this.domNode = document.createElement('input');
+	// allow for null value. It can only be set programmatically and not by user interaction.
+	return compose(_DomInput, function() {
 		this.domNode.type = 'checkbox';
-		var self = this;
-		this.domNode.addEventListener('input', function() {
-			self._emit('value', self.domNode.checked);
-		});
-		this.value(value);
 	}, {
-		value: function(value) {
-			if (arguments.length > 0) {
-				this._setNodeValue(value);
-				this._emit('input', this.domNode.checked);
-			} else {
-				return this.domNode.checked;
+		_getValue: function() {
+			if (this.domNode.indeterminate) {
+				return null;
 			}
+			return this.domNode.checked;
 		},
-		_setNodeValue: function(value) {
+		_setValue: function(value) {
+			if (value === null) {
+				this.domNode.indeterminate = true; // display null value
+			}
 			this.domNode.checked = !!value;
-		}
+		},
 	});
 });
