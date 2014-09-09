@@ -33,7 +33,7 @@ define([
 			});
 			if (this._style && this._style.items) {
 				for (var i in cmps) {
-					cmps[i].style && cmps[i].style(this._style.items);
+					cmps[i].style(this._style.items);
 				}
 			}
 			this._root.content(cmps);
