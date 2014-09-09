@@ -26,18 +26,24 @@ define([
 	// var TdContainer = compose(HtmlContainer, {_tag: 'td'});
 	// var BodyContainer = compose(HtmlContainer, {_tag: 'tbody'});
 
-	var DestroyableHtmlContainer = compose(_Destroyable, HtmlContainer);
+	var TableRow = compose(HtmlContainer, function() {
+		this.domNode.style.display = 'table-row';
+	});
+
+	var TableCell = compose(HtmlContainer, function() {
+		this.domNode.style.display = 'table-cell';
+	});
+
+	var DestroyableTableCell = compose(TableCell, _Destroyable);
 
 	var RowContainer = compose(ItemListBase, {
 		_rootFactory: function() {
-			return new HtmlContainer().position({display: 'table-row'});
+			return new TableRow();
 		},
 		_itemFactory: function(cmpAndWidth) {
 			var cmp = cmpAndWidth[0];
 			var width = cmpAndWidth[1];
-			return new HtmlContainer([cmp]).position({
-				display: 'table-cell',
-			}).bounds({width: width});
+			return new TableCell().content([cmp]).bounds({width: width});
 		}
 	});
 
@@ -85,12 +91,18 @@ define([
 		},
 	});
 
+	var FixedTable = compose(HtmlContainer, function() {
+		this.domNode.style.display = 'table';
+		this.domNode.style.tableLayout = 'fixed';
+		this.domNode.style.width = 0;
+	});
+
 	var Body = compose(ItemListBase, function() {
 		this._columns = {};
 		this._columnsOrder = [];
 	}, {
 		_rootFactory: function() {
-			return new HtmlContainer().position({display: 'table', tableLayout: 'fixed'});
+			return new FixedTable();
 		},
 		_itemFactory: function(item) {
 			var row = new Row();
@@ -158,11 +170,11 @@ define([
 
 	var HeadRow = compose(ItemListBase, {
 		_rootFactory: function() {
-			return new HtmlContainer().position({display: 'table-row'});
+			return new TableRow();
 		},
 		_itemFactory: function(column) {
 			var headCmp = column.head;
-			var th = new DestroyableHtmlContainer().position({display: 'table-cell'});
+			var th = new DestroyableTableCell();
 			if (headCmp.domNode) {
 				th.add(th._own(headCmp)); // headCmp is destroyed when the column is removed
 			} else {
@@ -179,7 +191,7 @@ define([
 		this._headRow = this._own(new HeadRow());
 		this._body = this._own(new Body());
 		// layout
-		var thead = this._head = new HtmlContainer().position({display: 'table', tableLayout: 'fixed'});
+		var thead = this._head = new FixedTable();
 		thead.add(this._headRow);
 		var bodyWrapper = new HtmlContainer([this._body]);
 		this._root.content([
