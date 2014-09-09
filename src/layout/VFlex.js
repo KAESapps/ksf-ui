@@ -8,7 +8,8 @@ define([
 	return compose(_Flex, {
 		_setChildPosition: function(child, childOptions) {
 			child.position({
-				display: 'block'
+				mode: 'relative',
+				orientation: 'vertical'
 			});
 		},
 		_layout: function() {

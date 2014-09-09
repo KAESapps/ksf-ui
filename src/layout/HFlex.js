@@ -8,15 +8,16 @@ define([
 	return compose(_Flex, {
 		_setChildPosition: function(child, childOptions) {
 			var posArgs = {
-				display: 'inline-block'
+				mode: 'relative',
+				orientation: 'horizontal'
 			};
 			var vertAlign = childOptions.verticalAlign || this._options.verticalAlign || 'fit';
 			childOptions.verticalAlign = vertAlign;
 
 			if (vertAlign !== 'fit') {
-				posArgs.verticalAlign = vertAlign;
+				posArgs.align = vertAlign;
 			} else {
-				posArgs.verticalAlign = 'top';
+				posArgs.align = 'top';
 			}
 
 			child.position(posArgs);
