@@ -27,7 +27,7 @@ define([
 		},
 		add: function(child, beforeChild, options) {
 			HtmlContainer.prototype.add.call(this, child, beforeChild);
-			child.position && child.position(options);
+			child.position && child.position(options || this._defaultOptions);
 		},
 		scrollable: function(scrollable) {
 			this.domNode.style.overflow = scrollable ? 'auto' : null;
