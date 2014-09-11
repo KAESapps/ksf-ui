@@ -195,10 +195,14 @@ define([
 		thead.add(this._headRow);
 		var bodyWrapper = new HtmlContainer([this._body]);
 		this._root.content([
-			new HtmlContainer([thead]),
+			thead,
 			[bodyWrapper, {flex: true}],
 		]);
-		bodyWrapper.domNode.style.overflow = 'auto';
+		bodyWrapper.domNode.style.overflowY = 'auto'; // vertical scroll
+		bodyWrapper.domNode.style.display = 'inline-block';
+		bodyWrapper.domNode.style.overflowX = 'hidden';
+		this._root.domNode.style.overflowX = 'scroll'; // horizontal scroll
+		this._root.domNode.style.overflowY = 'hidden';
 	}, {
 		_rootFactory: function() {
 			return new VFlexContainer();
