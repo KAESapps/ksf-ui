@@ -84,7 +84,12 @@ define([
 			destroy(this._components);
 		},
 		active: function(active) {
-			this.domNode.classList[active ? 'add' : 'remove']('active');
+			// this.domNode.classList[active ? 'add' : 'remove']('active');
+			if (active) {
+				this.activeStyle && this.activeStyle.apply(this.domNode);
+			} else {
+				this.activeStyle && this.activeStyle.unapply(this.domNode);
+			}
 		},
 		style: function(style) {
 			this._root.style(style);
@@ -129,6 +134,7 @@ define([
 		},
 		addRow: function(value, key, beforeKey) {
 			var row = this.add(value, key, beforeKey);
+			row.activeStyle = this._activeRowStyle;
 			var columns = this._columns;
 			this._columnsOrder.forEach(function(key) {
 				var column = columns[key];
@@ -165,6 +171,9 @@ define([
 				var row = this._components[rowKey];
 				row.move(key, beforeKey);
 			}
+		},
+		activeRowStyle: function(style) {
+			this._activeRowStyle = style;
 		},
 	});
 
@@ -257,6 +266,7 @@ define([
 					items: style.bodyCells,
 				}
 			});
+			style.activeRow && this._body.activeRowStyle(style.activeRow);
 			return this;
 		},
 	});
