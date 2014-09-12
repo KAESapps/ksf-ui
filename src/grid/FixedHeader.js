@@ -195,8 +195,8 @@ define([
 		thead.add(this._headRow);
 		var bodyWrapper = new HtmlContainer([this._body]);
 		this._root.content([
-			thead,
-			[bodyWrapper, {flex: true}],
+			[thead, { align: 'left' }],
+			[bodyWrapper, { flex: true, align: 'left' }],
 		]);
 		bodyWrapper.domNode.style.overflowY = 'auto'; // vertical scroll
 		bodyWrapper.domNode.style.display = 'inline-block';
