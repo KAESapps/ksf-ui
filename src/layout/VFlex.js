@@ -6,10 +6,14 @@ define([
 	_Flex
 ){
 	return compose(_Flex, {
-		_setChildPosition: function(child) {
+		_setChildPosition: function(child, childOptions) {
+			var align = childOptions.align || this._options.align || 'fit';
+			childOptions.align = align;
+
 			child.position({
 				mode: 'relative',
-				orientation: 'vertical'
+				orientation: 'vertical',
+				align: align
 			});
 		},
 		_layout: function() {
