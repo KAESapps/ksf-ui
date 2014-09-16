@@ -1,17 +1,19 @@
 define([
 	'compose',
 	'ksf/dom/_WithSize',
+	'ksf/dom/_WithInnerSize',
 	'ksf/dom/_Boundable',
 	'ksf/dom/_Positionable',
 	'ksf/dom/style/_Stylable',
 ], function(
 	compose,
 	_WithSize,
+	_WithInnerSize,
 	_Boundable,
 	_Positionable,
 	_Stylable
 ){
-	return compose(_WithSize, _Positionable, _Stylable, function(content) {
+	return compose(_WithSize, _WithInnerSize, _Positionable, _Stylable, function(content) {
 		this.domNode = document.createElement('div');
 		this.content(content);
 	}, {
@@ -26,6 +28,7 @@ define([
 				this._childInDom(this._inDom);
 				this._layout();
 			}
+			return this;
 		},
 		_childInDom: function(inDom) {
 			this._child && this._child.inDom && this._child.inDom(inDom);
@@ -36,11 +39,10 @@ define([
 		}
 	},_Boundable, {
 		_layout: function() {
-			this._child && this._child.bounds(this._bounds);
+			this._child && this._child.bounds(this._innerSize());
 		},
-		bounds: function(bounds) {
+		bounds: function() {
 			_Boundable.prototype.bounds.apply(this, arguments);
-			this._bounds = bounds;
 			this._layout();
 		}
 	});
