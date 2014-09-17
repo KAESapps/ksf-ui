@@ -30,5 +30,13 @@ define([
 		onInput: function(cb) {
 			return this._on('input', cb);
 		},
+		disabled: function(disabled) {
+			if (arguments.length) {
+				this.domNode.disabled = disabled;
+				return this;
+			} else {
+				return this.domNode.disabled;
+			}
+		},
 	});
 });
