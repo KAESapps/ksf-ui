@@ -8,6 +8,7 @@ define([
 	// allow for null value. It can only be set programmatically and not by user interaction.
 	return compose(_DomInput, function() {
 		this.domNode.type = 'checkbox';
+		this.domNode.indeterminate = true;
 	}, {
 		_getValue: function() {
 			if (this.domNode.indeterminate) {
@@ -18,8 +19,10 @@ define([
 		_setValue: function(value) {
 			if (value === null) {
 				this.domNode.indeterminate = true; // display null value
+			} else {
+				this.domNode.indeterminate = false; // display null value
+				this.domNode.checked = !!value;
 			}
-			this.domNode.checked = !!value;
 		},
 	});
 });
