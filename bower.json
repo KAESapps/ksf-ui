@@ -2,7 +2,8 @@
   "name": "ksf-ui",
   "version": "0.0.0",
   "dependencies": {
-    "ksf": "KAESapps/ksf#ksf2"
+    "ksf": "KAESapps/ksf#ksf2",
+    "drop": "HubSpot/drop#~0.5.4"
   },
   "devDependencies": {
     "requirejs": "2.1.11",

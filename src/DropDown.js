@@ -6,6 +6,7 @@ define([
 	'ksf/dom/_Boundable',
 	'ksf/dom/_Focusable',
 	'./layout/DropDown',
+	'./layout/GlobalDropDown',
 ], function(
 	compose,
 	_Composite,
@@ -13,7 +14,8 @@ define([
 	_Focusable,
 	_Boundable,
 	_DomFocusable,
-	DropDownContainer
+	DropDownContainer,
+	GlobalDropDownContainer
 ){
 	var FocusableDropDownContainer = compose(DropDownContainer, _DomFocusable);
 
@@ -24,7 +26,11 @@ define([
 			this._setRoot(new FocusableDropDownContainer(params));
 			this._addFocusable(this._root);
 		} else {
-			this._setRoot(new DropDownContainer(params));
+			if (params.global) {
+				this._setRoot(new GlobalDropDownContainer(params));
+			} else {
+				this._setRoot(new DropDownContainer(params));
+			}
 		}
 		// auto close on blur
 		this.onBlur(this.open.bind(this, false));
