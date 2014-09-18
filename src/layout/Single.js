@@ -44,6 +44,7 @@ define([
 		bounds: function() {
 			_Boundable.prototype.bounds.apply(this, arguments);
 			this._layout();
+			return this;
 		}
 	});
 });
