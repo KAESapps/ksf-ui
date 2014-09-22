@@ -28,6 +28,14 @@ define([
 			this._root.style(style.root);
 			this._owned.icon.style(style.icon);
 			this._owned.text.style(style.text);
-		}
+		},
+		icon: function(iconChar) {
+			this._owned.icon.value(iconChar);
+			return this;
+		},
+		text: function(text) {
+			this._owned.text.value(text);
+			return this;
+		},
 	});
 });
