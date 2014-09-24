@@ -59,27 +59,33 @@ define([
 				children.push(child);
 			});
 			this._root.content(children);
-			this._layoutIfInDom();
+			this._checkForLayout();
 
 			return this;
 		},
 		inDom: function(inDom) {
 			var ret = _Composite.prototype.inDom.apply(this, arguments);
 			if (inDom) {
-				this._layout();
+				this._checkForLayout();
 			}
 			return ret;
 		},
 
-		_layoutIfInDom: function() {
-			if (this.inDom()) {
+		_checkForLayout: function() {
+			if (this.inDom() && this.bounds()) {
 				this._layout();
 			}
 		},
 
-		bounds: function() {
-			_Composite.prototype.bounds.apply(this, arguments);
-			this._layoutIfInDom();
+		bounds: function(bounds) {
+			if  (bounds !== undefined) {
+				this._bounds = bounds;
+				_Composite.prototype.bounds.apply(this, arguments);
+				this._checkForLayout();
+				return this;
+			} else {
+				return this._bounds;
+			}
 		}
 	});
 });

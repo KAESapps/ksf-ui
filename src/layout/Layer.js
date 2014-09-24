@@ -1,27 +1,19 @@
 define([
 	'compose',
 	'../base/HtmlContainer',
-	'ksf/dom/_WithSize',
-	'ksf/dom/_Boundable',
-	'ksf/dom/_Positionable',
-	'ksf/dom/style/_Stylable'
+	'ksf/dom/composite/_Composite',
+	'ksf/dom/composite/_RootStylable',
 ], function(
 	compose,
 	HtmlContainer,
-	_WithSize,
-	_Boundable,
-	_Positionable,
-	_Stylable
+	_Composite,
+	_RootStylable
 ){
-	return compose(_WithSize, _Stylable, function(content) {
-		this._container = new HtmlContainer();
-		this.domNode = this._container.domNode;
+	return compose(_Composite, _RootStylable, function() {
+		this._setRoot(new HtmlContainer());
 		this.domNode.style.position = 'relative';
-		content && this.content(content);
 	}, {
 		_layout: function() {
-			var inDom = this._inDom;
-			if (!inDom) { return; }
 			var innerSize = this.size();
 
 			this._content && this._content.forEach(function(childAndOptions, index) {
@@ -71,36 +63,35 @@ define([
 				});
 			});
 		},
+		_checkForLayout: function() {
+			if (this.inDom() && this.bounds()) {
+				this._layout();
+			}
+		},
 		content: function(content) {
-			this._container.content(content.map(function(childAndOptions) {
+			this._root.content(content.map(function(childAndOptions) {
 				return childAndOptions[0] || childAndOptions;
 			}));
 			this._content = content;
-			this._applyInDom();
+			this._checkForLayout();
 			return this;
 		},
-		_applyInDom: function() {
-			var inDom = this._inDom;
-			this._content && this._content.forEach(function(childAndOptions) {
-				var child = childAndOptions[0] || childAndOptions;
-				child.inDom && child.inDom(inDom);
-			});
-			this._layout();
-		},
 		inDom: function(inDom) {
-			this._inDom = inDom;
-			this._applyInDom();
-		},
-		position: function(position) {
-			if (position !== undefined) {
-				position.position = position.position || 'relative';
+			var ret = _Composite.prototype.inDom.apply(this, arguments);
+			if (inDom) {
+				this._checkForLayout();
 			}
-			_Positionable.position.call(this, position);
-		}
-	}, _Boundable, {
-		bounds: function() {
-			_Boundable.prototype.bounds.apply(this, arguments);
-			this._layout();
+			return ret;
+		},
+		bounds: function(bounds) {
+			if  (bounds !== undefined) {
+				this._bounds = bounds;
+				_Composite.prototype.bounds.apply(this, arguments);
+				this._checkForLayout();
+				return this;
+			} else {
+				return this._bounds;
+			}
 		},
 	});
 });
