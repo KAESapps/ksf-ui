@@ -260,10 +260,10 @@ define([
 			style.headCells && this._headRow.style({
 				items: style.headCells,
 			});
-			style.bodyCells && this._body.style({
+			style.body && this._body.style({
 				items: {
-					root: style.rows,
-					items: style.bodyCells,
+					root: style.body.rows,
+					items: style.body.cells,
 				}
 			});
 			style.activeRow && this._body.activeRowStyle(style.activeRow);
