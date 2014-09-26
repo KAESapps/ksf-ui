@@ -55,12 +55,12 @@ define([
 				}
 
 				child.position(childPosition);
-				child.bounds && child.bounds({
-					height: childHBound,
-					width: childWBound,
-					heightMax: innerSize.height,
-					widthMax: innerSize.width
-				});
+				if (childWBound || childHBound) {
+					child.bounds({
+						height: childHBound,
+						width: childWBound,
+					});
+				}
 			});
 		},
 		_checkForLayout: function() {
