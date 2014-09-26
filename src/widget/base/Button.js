@@ -7,10 +7,5 @@ define([
 	Label,
 	_Clickable
 ) {
-	return compose(Label, _Clickable, {
-		tip: function(tipText) {
-			this.domNode.title = tipText;
-			return this;
-		}
-	});
+	return compose(Label, _Clickable);
 });

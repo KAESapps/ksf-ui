@@ -24,6 +24,10 @@ define([
 			} else {
 				return this.domNode.textContent;
 			}
-		}
+		},
+		tip: function(tipText) {
+			this.domNode.title = tipText;
+			return this;
+		},
 	});
 });
