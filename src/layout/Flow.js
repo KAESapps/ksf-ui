@@ -1,5 +1,5 @@
 define([
-	'compose',
+	'ksf/utils/compose',
 	'../base/HtmlContainer',
 ], function(
 	compose,

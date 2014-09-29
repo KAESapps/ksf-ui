@@ -1,5 +1,5 @@
 define([
-	'compose',
+	'ksf/utils/compose',
 	'ksf/dom/_WithSize',
 	'ksf/dom/_Positionable',
 	'ksf/dom/_Boundable',
