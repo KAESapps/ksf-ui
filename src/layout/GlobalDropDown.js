@@ -46,6 +46,7 @@ define([
 		},
 		_displayPopup: function(popup, opened, options) {
 			if (this._opened && this._popup) {
+				this._popup.inDom(false);
 				this._drop.destroy();
 			}
 			if (opened && popup) {
@@ -64,6 +65,7 @@ define([
 					}
 				});
 				this._drop.open();
+				popup.inDom(true);
 			}
 		},
 		content: function(content) {
