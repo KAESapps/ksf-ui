@@ -1,5 +1,29 @@
 {
+  "name": "ksf-ui",
+  "version": "0.0.0",
+  "description": "KaeS ui components for modern web apps",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+  	"ksf": "KAESapps/ksf#ksf2",
+    "domready": "~1.0.7"
+  },
   "devDependencies": {
+    "browserify": "latest",
+    "deamdify": "latest",
     "intern": "~1.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/KAESapps/ksf-ui.git"
+  },
+  "contributors": [
+    "Quentin Vuilliot <quentin.vuilliot@kaes.fr>",
+    "Sylvain Vuilliot <sylvain.vuilliot@kaes.fr>"
+  ],
+  "license": "MIT",
+  "browserify": {
+    "transform": "deamdify"
   }
 }
