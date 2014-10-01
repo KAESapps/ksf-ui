@@ -42,6 +42,9 @@ define([
 			this._own([], 'childrenBoundsCancelers');
 		},
 		content: function(content) {
+			if (! arguments.length) {
+				return this._root.content();
+			}
 			var fixedChildren = this._fixedChildren = [],
 			flexChildren = this._flexChildren = [];
 			var self = this;
