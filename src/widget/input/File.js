@@ -3,11 +3,13 @@ define([
 	'ksf/base/_Evented',
 	'ksf/dom/_WithSize',
 	'ksf/dom/style/_Stylable',
+	'ksf/base/_Chainable',
 ], function(
 	compose,
 	_Evented,
 	_WithSize,
-	_Stylable
+	_Stylable,
+	_Chainable
 ){
 	var click = function(node) {
 		var event = document.createEvent("MouseEvents");
@@ -15,7 +17,7 @@ define([
 		node.dispatchEvent(event);
 	};
 
-	return compose(_Evented, _WithSize, _Stylable, function(label) {
+	return compose(_Evented, _WithSize, _Stylable, _Chainable, function(label) {
 		this.domNode = document.createElement('span');
 		this.domNode.textContent = label || 'Ouvrir';
 		var fileInput = this._fileInput = document.createElement('input');
@@ -25,7 +27,8 @@ define([
 			click(fileInput);
 		});
 		this._fileInput.addEventListener('change', function() {
-			self._emit('input', self.value());
+			var file = self.value();
+			self._emit('input', file ? file : null);
 		});
 	}, {
 		value: function() {
