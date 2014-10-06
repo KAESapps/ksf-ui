@@ -1,4 +1,4 @@
-define(['compose'], function(compose){
+define(['ksf/utils/compose'], function(compose){
 	return compose(function(observable) {
 		var self = this;
 
