@@ -6,7 +6,7 @@
     "test": "tests"
   },
   "dependencies": {
-  	"ksf": "KAESapps/ksf#ksf2",
+  	"ksf": "KAESapps/ksf#master",
     "domready": "~1.0.7"
   },
   "devDependencies": {
