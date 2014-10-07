@@ -42,5 +42,9 @@ define([
 		onInput: function(cb) {
 			return this._on('input', cb);
 		},
+		tip: function(tipText) {
+			this.domNode.title = tipText;
+			return this;
+		},
 	});
 });
