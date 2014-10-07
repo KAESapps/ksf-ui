@@ -1,13 +1,17 @@
 define([
 	'ksf/utils/compose',
 	'ksf/base/_Evented',
-	'ksf/dom/style/_Stylable'
+	'ksf/dom/style/_Stylable',
+	'ksf/dom/_Positionable',
+	'ksf/dom/_WithSize',
 ], function(
 	compose,
 	_Evented,
-	_Stylable
+	_Stylable,
+	_Positionable,
+	_WithSize
 ){
-	return compose(_Evented, _Stylable, function() {
+	return compose(_Evented, _Stylable, _Positionable, _WithSize, function() {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'checkbox';
 		var self = this;
