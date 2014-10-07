@@ -2,7 +2,7 @@
   "name": "ksf-ui",
   "version": "0.0.0",
   "dependencies": {
-    "ksf": "KAESapps/ksf#ksf2",
+    "ksf": "KAESapps/ksf#master",
     "drop": "HubSpot/drop#~0.5.4",
     "famous": "famous#v0.3.0-alpha",
     "domready": "ded/domready"
