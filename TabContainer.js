@@ -1,5 +1,5 @@
 define([
-	'compose',
+	'ksf/utils/compose',
 	'ksf/dom/composite/_Composite',
 	'./layout/VFlex',
 	'./layout/HFlex',
