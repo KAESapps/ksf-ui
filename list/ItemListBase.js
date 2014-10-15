@@ -56,6 +56,7 @@ define([
 			this._root.add(cmp, beforeCmp);
 
 			this._components[key] = cmp;
+			this._updateActive();
 
 			return cmp;
 		},
@@ -81,19 +82,24 @@ define([
 			this._components = {};
 			this.active(null);
 		},
+
 		_activeKey: null,
-		active: function(key) {
+		_updateActive: function() {
 			var activeRow;
+			if (this._activeKey in this._components) {
+				activeRow = this._components[this._activeKey];
+				activeRow.active(true);
+			}
+		},
+		active: function(key) {
 			if (arguments.length) {
+				// deactivate previously active row
 				if (this._activeKey in this._components) {
-					activeRow = this._components[this._activeKey];
+					var activeRow = this._components[this._activeKey];
 					activeRow.active(false);
 				}
 				this._activeKey = key;
-				if (key in this._components) {
-					activeRow = this._components[key];
-					activeRow.active(true);
-				}
+				this._updateActive();
 			} else {
 				return this._activeKey;
 			}
