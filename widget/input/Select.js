@@ -32,7 +32,7 @@ define([
 
 		var self = this;
 		this.domNode.addEventListener('change', function() {
-			self._setValue(self.domNode.value);
+			self._setValue(self._optionValues[self.domNode.selectedIndex]);
 			self._emit('input', self._value);
 		});
 	}, _Focusable, {
@@ -79,7 +79,7 @@ define([
 				el.textContent = optionItem[1];
 
 				domNode.appendChild(el);
-				optionValues.push(el.value);
+				optionValues.push(optionItem[0]);
 			});
 
 			this._setValue(this._getValue());
