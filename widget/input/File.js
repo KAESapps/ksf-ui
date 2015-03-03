@@ -4,12 +4,16 @@ define([
 	'ksf/dom/_WithSize',
 	'ksf/dom/style/_Stylable',
 	'ksf/base/_Chainable',
+	'ksf/dom/_Positionable',
+	'ksf/dom/_Boundable',
 ], function(
 	compose,
 	_Evented,
 	_WithSize,
 	_Stylable,
-	_Chainable
+	_Chainable,
+	_Positionable,
+	_Boundable
 ){
 	var click = function(node) {
 		var event = document.createEvent("MouseEvents");
@@ -17,7 +21,7 @@ define([
 		node.dispatchEvent(event);
 	};
 
-	return compose(_Evented, _WithSize, _Stylable, _Chainable, function(label) {
+	return compose(_Evented, _WithSize, _Stylable, _Positionable, _Chainable, function(label) {
 		this.domNode = document.createElement('span');
 		this.domNode.textContent = label || 'Ouvrir';
 		var fileInput = this._fileInput = document.createElement('input');
@@ -30,7 +34,7 @@ define([
 			var file = self.value();
 			self._emit('input', file ? file : null);
 		});
-	}, {
+	}, _Boundable, {
 		value: function() {
 			if (arguments.length > 0) {
 				// on ne peut pas spécifier un fichier, seulement le remettre à zéro
