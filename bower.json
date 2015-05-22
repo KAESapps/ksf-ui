@@ -2,7 +2,7 @@
   "name": "ksf-ui",
   "version": "1.0.1",
   "dependencies": {
-    "ksf": "KAESapps/ksf#v1"
+    "ksf": "KAESapps/ksf#4938ea79e042407a124567a9619ed9012e1a126c"
   },
   "devDependencies": {
     "requirejs": "2.1.11",

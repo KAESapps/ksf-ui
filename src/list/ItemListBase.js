@@ -25,9 +25,11 @@ define([
 			var self = this;
 			this.clear();
 			this._destroyAllComponents();
-			this._components = {};	
+			this._components = {};
 			var cmps = items.map(function(item) {
-				return self._components[item.key] = self._createComponent(item.value);
+				var cmp = self._createComponent(item.value);
+				self._components[item.key] = cmp;
+				return cmp;
 			});
 			this._root.content(cmps);
 		},
@@ -46,37 +48,45 @@ define([
 			var beforeCmp = (beforeKey !== undefined) ? this._components[beforeKey] : undefined;
 			var cmp = this._createComponent(value);
 			this._root.add(cmp, beforeCmp);
+			this._style && this._style.items && cmp.style(this._style.items);
 
 			this._components[key] = cmp;
+
 			return cmp;
 		},
 		remove: function(key) {
 			var cmp = this._components[key];
 			this._root.remove(cmp);
 			destroy(cmp);
-			
+
 			delete this._components[key];
 		},
 		move: function(key, beforeKey) {
 			var cmp = this._components[key];
 			var beforeCmp = this._components[beforeKey];
-			
+
 			this._root.move(cmp, beforeCmp);
 		},
 		clear: function() {
 			this._root.clear();
 			this._destroyAllComponents();
 			this._components = {};
+			this.active(null);
+
 		},
+		_activeKey: null,
 		active: function(key) {
+			var activeRow;
 			if (arguments.length) {
-				// deactivate previously active component
-				var activeCmp = this._components[this._activeKey];
-				activeCmp && activeCmp.active(false);
-				// activate newly active
-				activeCmp = this._components[key];
-				activeCmp && activeCmp.active(true);
+				if (this._activeKey !== null) {
+					activeRow = this._components[this._activeKey];
+					activeRow.active(false);
+				}
 				this._activeKey = key;
+				if (key !== null) {
+					activeRow = this._components[key];
+					activeRow.active(true);
+				}
 			} else {
 				return this._activeKey;
 			}
@@ -92,6 +102,15 @@ define([
 		destroy: function() {
 			this._destroyAllComponents();
 			_Composite.prototype.destroy.apply(this, arguments);
-		}
+		},
+		style: function(style) {
+			this._style = style;
+			style.root && this._root.style(style.root);
+			if (style.items) {
+				for (var i in this._components) {
+					this._components[i].style(style.items);
+				}
+			}
+		},
 	});
 });

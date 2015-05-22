@@ -3,7 +3,7 @@ define([
 	'../../editable/ShortText',
 	'ksf/dom/style/_WithStyle',
 	'ksf/dom/style/JSS',
-	'../styles/ShortText'
+	'../styles/shortText'
 ], function(
 	compose,
 	ShortText,

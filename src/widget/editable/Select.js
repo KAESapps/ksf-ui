@@ -16,6 +16,9 @@ define([
 		options: function(options) {
 			// TODO: prendre comme 'options' un observable
 			this._root.options(options);
+		},
+		style: function(style) {
+			this._root.style(style);
 		}
 	}, function(value, options) {
 		options && this.options(options);

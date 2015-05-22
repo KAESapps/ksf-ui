@@ -9,27 +9,22 @@ define([
 	_WithSize,
 	_Stylable
 ){
-	return compose(_Evented, _WithSize, _Stylable, function(value) {
+	return compose(_Evented, _WithSize, _Stylable, function(options) {
 		this.domNode = document.createElement('input');
 		this.domNode.type = 'text';
+		if (options && options.placeholder) { this.domNode.placeholder = options.placeholder; }
+		if (options && options.value !== undefined) { this.value(options.value); }
 		var self = this;
-		var changing = false;
-		this.domNode.addEventListener('change', function() {
-			if (!changing) {
-				changing = true;
-				self._emit('input', self.domNode.value);
-				self._setNodeValue(self._value);
-				changing = false;
-			}
+		this.domNode.addEventListener('input', function() {
+			self._emit('input', self.domNode.value);
 		});
-		if (value !== undefined ) { this.value(value); }
 	}, {
 		value: function(value) {
+			// value est settable programmatiquement pour initialiser la valeur mais ne déclenche pas un événement 'input'
 			if (arguments.length > 0) {
-				this._value = value;
 				this._setNodeValue(value);
 			} else {
-				return this._value;
+				return this.domNode.value;
 			}
 		},
 		_setNodeValue: function(value) {
@@ -37,9 +32,6 @@ define([
 		},
 		onInput: function(cb) {
 			return this._on('input', cb);
-		},
-		focus: function() {
-			this.domNode.focus();
 		}
 	});
 });
