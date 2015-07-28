@@ -1,12 +1,12 @@
 {
   "name": "ksf-ui",
-  "version": "0.0.0",
+  "version": "3.0.0",
   "description": "KaeS ui components for modern web apps",
   "directories": {
     "test": "tests"
   },
   "dependencies": {
-  	"ksf": "KAESapps/ksf#master",
+  	"ksf": "KAESapps/ksf#v1.0.1",
     "domready": "~1.0.7"
   },
   "devDependencies": {
